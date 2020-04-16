@@ -14,6 +14,10 @@ class Board
     let sizeRow: Int
     let sizeCol: Int
     var squares: [[Square]] = []  // a 2D array of square cells, indexed by [row][column]
+    var squaresList: [Square] = []
+    var squaresWithMines: [Square] = []
+    
+    var difficulty: Int = 10  // in 100% scale shows how much % of squares have mines
     
     init(sizeRow: Int, sizeCol: Int) {
         self.sizeRow = sizeRow
@@ -24,12 +28,15 @@ class Board
             for col in 0..<sizeCol {
                 let square = Square(row: row, col: col)
                 squareRow.append(square)
+                squaresList.append(square)
             }
             squares.append(squareRow)
         }
     }
     
     func resetBoard() {
+        determineSquaresThatHaveMines()
+        
         // assign mines to squares
         for row in 0..<sizeRow{
             for col in 0..<sizeCol{
@@ -46,10 +53,24 @@ class Board
         }
     }
     
-    // gives mine to a square with a probability of 10%
-    func calculateIsMineLocationForSquare(square: Square) {     // TODO change logic
-        square.isMineLocation=((arc4random()%10)==0)
-        // 1-in-10 chance that each location contains a mine
+    func determineSquaresThatHaveMines() {
+        squaresWithMines = []
+        squaresList = squaresList.shuffled()
+        var i = 0
+        while i < ((squaresList.count * difficulty) / 100) {
+            squaresWithMines.append(squaresList[i])
+            i += 1
+        }
+    }
+    
+    // gives mine to a square that is in squaresWithMinesList
+    func calculateIsMineLocationForSquare(square: Square) {
+        for squareWithMine in squaresWithMines {
+            if squareWithMine.col == square.col && squareWithMine.row == square.row {
+                square.isMineLocation = true
+                return
+            }
+        }
     }
     
     func calculateNumNeighborMinesForSquares(square: Square) {

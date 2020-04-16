@@ -8,14 +8,14 @@
 
 import UIKit
 
-class RootSplitViewController: UISplitViewController {
+class RootSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        //self.delegate = self
-        //self.preferredDisplayMode = .allVisible
+        self.delegate = self
+        self.preferredDisplayMode = .allVisible
     }
     
 
@@ -28,9 +28,10 @@ class RootSplitViewController: UISplitViewController {
         // Pass the selected object to the new view controller.
     }
     
-    /*
+    
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true
-    }*/
+    }
+    
 
 }

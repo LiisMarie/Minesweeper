@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CGL-j5-2Jl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jbZ-Iu-lpA">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
@@ -7,72 +7,77 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root Split View Controller-->
-        <scene sceneID="bt5-sq-yj9">
+        <!--View Controller-->
+        <scene sceneID="8LB-ks-giP">
             <objects>
-                <splitViewController id="CGL-j5-2Jl" customClass="RootSplitViewController" customModule="MineSweeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jbZ-Iu-lpA" customClass="ViewController" customModule="MineSweeper" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nOU-NP-w5Z">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ih-Ts-Cz3">
+                                <rect key="frame" x="16" y="124" width="382" height="722"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="44" translatesAutoresizingMaskIntoConstraints="NO" id="vRJ-lU-Fxj">
+                                <rect key="frame" x="16" y="60" width="382" height="48"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="💣 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="siz-Ff-4Lf">
+                                        <rect key="frame" x="0.0" y="0.0" width="45" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpF-vC-5aH">
+                                        <rect key="frame" x="89" y="0.0" width="85" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <state key="normal" title="🙂"/>
+                                        <connections>
+                                            <action selector="newGamePressed:" destination="jbZ-Iu-lpA" eventType="touchUpInside" id="HLm-VN-Q7z"/>
+                                        </connections>
+                                    </button>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="6bG-BH-6UR">
+                                        <rect key="frame" x="218" y="0.0" width="75" height="49"/>
+                                        <segments>
+                                            <segment title="💣"/>
+                                            <segment title="🚩"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="bombFlagSegmentedControl:" destination="jbZ-Iu-lpA" eventType="valueChanged" id="JPc-Sb-lEd"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⏱ 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5h-wW-dnh">
+                                        <rect key="frame" x="337" y="0.0" width="45" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="leading" secondItem="QYN-DM-OeZ" secondAttribute="leading" constant="16" id="0Wp-Ps-RhT"/>
+                            <constraint firstItem="vRJ-lU-Fxj" firstAttribute="top" secondItem="QYN-DM-OeZ" secondAttribute="top" constant="16" id="23g-V1-8YC"/>
+                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="trailing" secondItem="vRJ-lU-Fxj" secondAttribute="trailing" constant="16" id="TYf-Ia-b7u"/>
+                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="bottom" secondItem="9Ih-Ts-Cz3" secondAttribute="bottom" constant="16" id="UGt-R3-MnU"/>
+                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="top" secondItem="vRJ-lU-Fxj" secondAttribute="bottom" constant="16" id="eaC-F1-fD2"/>
+                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="trailing" secondItem="9Ih-Ts-Cz3" secondAttribute="trailing" constant="16" id="iPS-kc-CMa"/>
+                            <constraint firstItem="vRJ-lU-Fxj" firstAttribute="leading" secondItem="QYN-DM-OeZ" secondAttribute="leading" constant="16" id="sD2-Eo-dKm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QYN-DM-OeZ"/>
+                    </view>
                     <connections>
-                        <segue destination="p6h-3q-XCr" kind="relationship" relationship="masterViewController" id="2TD-SA-zHd"/>
-                        <segue destination="W9P-Oq-5dD" kind="relationship" relationship="detailViewController" id="Dk6-ix-EFS"/>
+                        <outlet property="boardView" destination="9Ih-Ts-Cz3" id="VKy-Fg-kHm"/>
+                        <outlet property="bombsLeftLabel" destination="siz-Ff-4Lf" id="M6M-7L-QUf"/>
+                        <outlet property="gameLabel" destination="xpF-vC-5aH" id="uPB-Hf-Spq"/>
+                        <outlet property="timeLabel" destination="b5h-wW-dnh" id="uVU-B0-iZp"/>
                     </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4zn-oe-xA1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="354" y="-153"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="59S-92-uzm">
-            <objects>
-                <viewController id="p6h-3q-XCr" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="reA-rV-LSP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Master" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BmD-cz-sGi">
-                                <rect key="frame" x="180.5" y="442.5" width="53" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="BmD-cz-sGi" firstAttribute="centerY" secondItem="a3J-jQ-269" secondAttribute="centerY" id="amm-aV-TGf"/>
-                            <constraint firstItem="BmD-cz-sGi" firstAttribute="centerX" secondItem="a3J-jQ-269" secondAttribute="centerX" id="kWr-Kk-uiH"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="a3J-jQ-269"/>
-                    </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jVZ-W6-IQg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xv6-DU-Wwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1192.753623188406" y="-402.45535714285711"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="VZT-Gc-ksL">
-            <objects>
-                <viewController id="W9P-Oq-5dD" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CvQ-dc-yE5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kcn-ZK-1Ur">
-                                <rect key="frame" x="185" y="464.5" width="44" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="kcn-ZK-1Ur" firstAttribute="centerX" secondItem="vbQ-op-BR1" secondAttribute="centerX" id="0uU-lP-eY8"/>
-                            <constraint firstItem="kcn-ZK-1Ur" firstAttribute="centerY" secondItem="vbQ-op-BR1" secondAttribute="centerY" id="4B8-4s-bnc"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="vbQ-op-BR1"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="H80-Xa-RcS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1193" y="291"/>
+            <point key="canvasLocation" x="648" y="-200"/>
         </scene>
     </scenes>
 </document>

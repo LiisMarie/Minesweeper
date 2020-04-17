@@ -10,8 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let BOARD_SIZE: Int = 10
-    let BOARD_SIZE_ROW: Int = 15
+    let BOARD_SIZE_ROW: Int = 18
     let BOARD_SIZE_COL: Int = 10
     var board: Board
     var squareButtons: [SquareButton] = []
@@ -52,10 +51,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameLabel: UIButton!
     
     func initializeBoard() {
+        // TODO dynamically changing board size
         for row in 0..<board.sizeRow {
             for col in 0..<board.sizeCol {
                 let square = board.squares[row][col]
-                let squareSize: CGFloat = self.boardView.frame.width / CGFloat(BOARD_SIZE)
+                let squareSize: CGFloat = self.boardView.frame.width / CGFloat(BOARD_SIZE_COL)
                 let squareButton = SquareButton(squareModel: square, squareSize: squareSize, squareMargin: 1)
                 squareButton.setTitleColor(UIColor.darkGray, for: .normal)
                 squareButton.addTarget(self, action: #selector(squareButtonPressed), for: .touchUpInside)  // Selector(("squareButtonPressed:"))
@@ -93,10 +93,12 @@ class ViewController: UIViewController {
                     // theres already a flag, remove it
                     sender.setTitle("", for: .normal)
                     sender.flagPlaced = false
+                    self.bombsLeft += 1
                 } else {
                     // theres no flag, so place the flag
                     sender.setTitle(flag, for: .normal)
                     sender.flagPlaced = true
+                    self.bombsLeft -= 1
                 }
             }
             
@@ -134,7 +136,6 @@ class ViewController: UIViewController {
                 }
             }
         }
-        // TODO handle false flags
     }
     
     
@@ -166,6 +167,8 @@ class ViewController: UIViewController {
         self.oneSecondTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(oneSecond), userInfo: nil, repeats: true)
         
         self.gameOn = true
+        
+        self.bombsLeft = self.board.squaresWithMines.count
     }
     
     @objc func oneSecond() {

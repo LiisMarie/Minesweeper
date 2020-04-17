@@ -35,6 +35,9 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <state key="normal" title="L1"/>
+                                        <connections>
+                                            <action selector="changeOfLevel:" destination="jbZ-Iu-lpA" eventType="touchUpInside" id="gGV-n2-EbX"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpF-vC-5aH">
                                         <rect key="frame" x="157.5" y="0.0" width="67" height="48"/>

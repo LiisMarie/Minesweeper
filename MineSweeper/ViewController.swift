@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var squareButtons: [SquareButton] = []
     var gameOn = false
     var currentlyPlacingFlags = false
+    var difficulty: Int = 10
     
     let unopenedColor = #colorLiteral(red: 0.5723067522, green: 0.5723067522, blue: 0.5723067522, alpha: 1)
     let openedColor = #colorLiteral(red: 0.7436007261, green: 0.7436007261, blue: 0.7436007261, alpha: 1)
@@ -52,10 +53,15 @@ class ViewController: UIViewController {
     
     func initializeBoard() {
         // TODO dynamically changing board size
+        for view in boardView.subviews {
+            view.removeFromSuperview()
+        }
+        self.squareButtons = []
+        let squareSideLength = min(BOARD_SIZE_ROW, BOARD_SIZE_COL)
         for row in 0..<board.sizeRow {
             for col in 0..<board.sizeCol {
                 let square = board.squares[row][col]
-                let squareSize: CGFloat = self.boardView.frame.width / CGFloat(BOARD_SIZE_COL)
+                let squareSize: CGFloat = self.boardView.frame.width / CGFloat(squareSideLength)
                 let squareButton = SquareButton(squareModel: square, squareSize: squareSize, squareMargin: 1)
                 squareButton.setTitleColor(UIColor.darkGray, for: .normal)
                 squareButton.addTarget(self, action: #selector(squareButtonPressed), for: .touchUpInside)  // Selector(("squareButtonPressed:"))
@@ -72,14 +78,7 @@ class ViewController: UIViewController {
             
             if !currentlyPlacingFlags && !sender.flagPlaced {  // if player isnt currently placing flags and current location has no flag
                 if (!sender.square.isRevealed) {
-                    sender.square.isRevealed = true
-                    sender.setTitle("\(sender.getLabelText())", for: .normal)
-                    sender.backgroundColor = openedColor
-                    
-                    if self.hasGameBeenWon() {
-                        self.endGamePlayerWon()
-                    }
-                    
+                    openSquareButton(squareButton: sender)
                 }
                 if sender.square.isMineLocation {
                     // player pressed on mine
@@ -87,6 +86,10 @@ class ViewController: UIViewController {
                     self.showAllBombs()
                     sender.backgroundColor = boomedMineColor
                     self.gameLabel.setTitle(gameLostText, for: .normal)
+                }
+                if sender.getLabelText() == "" {
+                    print("will have to open neighbors")
+                    self.openNeighborsOfEmptyCell(squareButton: sender)
                 }
             }  else if currentlyPlacingFlags {  // if player is currently placing flags
                 if sender.flagPlaced {
@@ -101,19 +104,82 @@ class ViewController: UIViewController {
                     self.bombsLeft -= 1
                 }
             }
+            if self.hasGameBeenWon() {
+                self.endGamePlayerWon()
+            }
             
         }
         
     }
     
+    func openSquareButton(squareButton: SquareButton) {
+        squareButton.square.isRevealed = true
+        squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
+        squareButton.backgroundColor = openedColor
+    }
+    
+    func findSquareButtonBySquare(square: Square) -> SquareButton? {
+        for squareButton in squareButtons {
+            if squareButton.square.row == square.row && squareButton.square.col == square.col {
+                return squareButton
+            }
+        }
+        return nil
+    }
+    
+    func openNeighborsOfEmptyCell(squareButton: SquareButton) {
+        if squareButton.getLabelText() != "" {
+            openSquareButton(squareButton: squareButton)
+            //return
+        } else {
+            openSquareButton(squareButton: squareButton)
+            let adjacentOffsets = [(0,-1),(-1,0),(1,0),(0,1)]
+            for (rowOffset,colOffset) in adjacentOffsets {
+                // getTileAtLocation may return a Square or it might return nil
+                let optionalNeighbor:Square? = self.board.getTileAtLocation(row: squareButton.square.row + rowOffset, col: squareButton.square.col + colOffset)
+                if let neighbor = optionalNeighbor { // only evaluates true if optional tile isnt nil
+                    // print("neighbor row: \(neighbor.row)  col: \(neighbor.col)")
+                    if !neighbor.isRevealed {
+                        if let neighborButton = self.findSquareButtonBySquare(square: neighbor) {
+                            openSquareButton(squareButton: neighborButton)
+                            self.openNeighborsOfEmptyCell(squareButton: neighborButton)
+                        }
+                    }
+                    
+                }
+            
+            }
+        }
+    }
+    
     func hasGameBeenWon() -> Bool {  // TODO
         // returns true if game has been won
+        if self.bombsLeft == 0 {
+            var flaggedBombs = 0
+            for squareButton in squareButtons {
+                if !squareButton.square.isRevealed {  // if button hasnt been revealed
+                    
+                    if squareButton.square.isMineLocation {  // if at button location is a mine
+                        
+                        if !squareButton.flagPlaced {  // if theres no flag
+                            return false
+                        } else { // if there is a flag, +1 to the counter
+                            flaggedBombs += 1
+                        }
+                    }
+                }
+            }
+            if flaggedBombs == self.board.squaresWithMines.count {  // if amount of correctly placed flags matches bombs amount then player has won
+                return true
+            }
+        }
         return false
     }
     
     func endGamePlayerWon() { // TODO
         // logic upon game has been won
         self.gameLabel.setTitle(gameWonText, for: .normal)
+        self.endCurrentGame()
     }
     
     func showAllBombs() {
@@ -141,13 +207,14 @@ class ViewController: UIViewController {
     
     func resetBoard() {
         // resets board with new mine locations & sets isRevealed to false for each square
-        self.board.resetBoard()
+        self.board.resetBoard(difficulty: self.difficulty)
         // iterates through each button and resets it to default
         for squareButton in self.squareButtons {
             squareButton.backgroundColor = unopenedColor
             squareButton.setTitle("", for: .normal)
             squareButton.flagPlaced = false
         }
+        self.bombsLeft = self.board.squaresWithMines.count
     }
     
     func endCurrentGame() {
@@ -160,6 +227,7 @@ class ViewController: UIViewController {
     
     func startNewGame() {
         // start new game
+        self.initializeBoard()
         self.resetBoard()
         self.gameLabel.setTitle(gameOnText, for: .normal)
         
@@ -198,6 +266,25 @@ class ViewController: UIViewController {
         }
         print("Player currently placing flags \(self.currentlyPlacingFlags)")
         
+    }
+    
+    @IBAction func changeOfLevel(_ sender: UIButton) {
+        switch sender.title(for: .normal) {
+        case "L1":
+            sender.setTitle("L2", for: .normal)
+            self.difficulty = 20
+            print("Player chose L2")
+        case "L2":
+            sender.setTitle("L3", for: .normal)
+            self.difficulty = 30
+            print("Player chose L3")
+        case "L3":
+            sender.setTitle("L1", for: .normal)
+            self.difficulty = 10
+            print("Player chose L1")
+        default:
+            print("Unknown value for level")
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {  // eemalda ?

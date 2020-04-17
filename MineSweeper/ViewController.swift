@@ -51,6 +51,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var bombsLeftLabel: UILabel!
     //@IBOutlet weak var boardView: UIView!
+    //@IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var gameLabel: UIButton!
     
@@ -78,7 +79,6 @@ class ViewController: UIViewController {
         
         self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
 
-        
         print("minFromRowCol : \(minFromRowCol)")
         print("frameWidth : \(frameWidth)")
         print("frameHeight : \(frameHeight)")

@@ -10,13 +10,15 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var BOARD_SIZE_ROW: Int = 35
-    var BOARD_SIZE_COL: Int = 35
+    var BOARD_SIZE_ROW: Int = 800
+    var BOARD_SIZE_COL: Int = 8000
     var board: Board
     var squareButtons: [SquareButton] = []
     var gameOn = false
     var currentlyPlacingFlags = false
     var difficulty: Int = 10
+    
+    var phoneIsInPortrait = true
     
     let unopenedColor = #colorLiteral(red: 0.5723067522, green: 0.5723067522, blue: 0.5723067522, alpha: 1)
     let openedColor = #colorLiteral(red: 0.7436007261, green: 0.7436007261, blue: 0.7436007261, alpha: 1)
@@ -60,12 +62,8 @@ class ViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
-    func initializeBoard() {
-        // TODO dynamically changing board size
-        for view in boardView.subviews {
-            view.removeFromSuperview()
-        }
-        self.squareButtons = []
+    func calculateDimensionsForBoard() -> CGFloat {
+        
         let minFromRowCol = min(BOARD_SIZE_ROW, BOARD_SIZE_COL)
         let frameWidth = self.boardView.frame.width
         let frameHeight = self.boardView.frame.height
@@ -73,9 +71,9 @@ class ViewController: UIViewController {
         
         if squareSize < 38.2 {
             squareSize = 38.2
-            self.BOARD_SIZE_ROW = Int(frameHeight / 38.2)
-            self.BOARD_SIZE_COL = Int(frameWidth / 38.2)
         }
+        self.BOARD_SIZE_ROW = Int(frameHeight / squareSize)
+        self.BOARD_SIZE_COL = Int(frameWidth / squareSize)
         
         self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
 
@@ -83,6 +81,18 @@ class ViewController: UIViewController {
         print("frameWidth : \(frameWidth)")
         print("frameHeight : \(frameHeight)")
         print("squareSize : \(self.boardView.frame.width / CGFloat(minFromRowCol))")
+        
+        return squareSize
+    }
+    
+    func initializeBoard() {
+        // TODO dynamically changing board size
+        for view in boardView.subviews {
+            view.removeFromSuperview()
+        }
+        self.squareButtons = []
+        
+        let squareSize = calculateDimensionsForBoard()
         
         for row in 0..<self.BOARD_SIZE_ROW {
             for col in 0..<self.BOARD_SIZE_COL {
@@ -274,10 +284,15 @@ class ViewController: UIViewController {
         
         updateOrientationUI()
         NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
+        /*
+        self.initializeBoard()
+        self.startNewGame()*/
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         self.initializeBoard()
         self.startNewGame()
-        
     }
 
     @IBAction func newGamePressed(_ sender: Any) {

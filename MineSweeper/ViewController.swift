@@ -10,8 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let BOARD_SIZE_ROW: Int = 18
-    let BOARD_SIZE_COL: Int = 10
+    var BOARD_SIZE_ROW: Int = 35
+    var BOARD_SIZE_COL: Int = 35
     var board: Board
     var squareButtons: [SquareButton] = []
     var gameOn = false
@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     let unopenedColor = #colorLiteral(red: 0.5723067522, green: 0.5723067522, blue: 0.5723067522, alpha: 1)
     let openedColor = #colorLiteral(red: 0.7436007261, green: 0.7436007261, blue: 0.7436007261, alpha: 1)
     let boomedMineColor = #colorLiteral(red: 0.9201895622, green: 0.3224265123, blue: 0.341611661, alpha: 1)
+    
+    let minSquareSideLength = 38.2
     
     let bomb = "💣"
     let flag = "🚩"
@@ -48,8 +50,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var bombsLeftLabel: UILabel!
-    @IBOutlet weak var boardView: UIView!
+    //@IBOutlet weak var boardView: UIView!
+    @IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var gameLabel: UIButton!
+    
+    required init?(coder aDecoder: NSCoder) {  // eemalda ?
+        self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
+        super.init(coder: aDecoder)
+    }
     
     func initializeBoard() {
         // TODO dynamically changing board size
@@ -57,11 +65,28 @@ class ViewController: UIViewController {
             view.removeFromSuperview()
         }
         self.squareButtons = []
-        let squareSideLength = min(BOARD_SIZE_ROW, BOARD_SIZE_COL)
-        for row in 0..<board.sizeRow {
-            for col in 0..<board.sizeCol {
+        let minFromRowCol = min(BOARD_SIZE_ROW, BOARD_SIZE_COL)
+        let frameWidth = self.boardView.frame.width
+        let frameHeight = self.boardView.frame.height
+        var squareSize: CGFloat = min(frameHeight, frameWidth) / CGFloat(minFromRowCol)
+        
+        if squareSize < 38.2 {
+            squareSize = 38.2
+            self.BOARD_SIZE_ROW = Int(frameHeight / 38.2)
+            self.BOARD_SIZE_COL = Int(frameWidth / 38.2)
+        }
+        
+        self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
+
+        
+        print("minFromRowCol : \(minFromRowCol)")
+        print("frameWidth : \(frameWidth)")
+        print("frameHeight : \(frameHeight)")
+        print("squareSize : \(self.boardView.frame.width / CGFloat(minFromRowCol))")
+        
+        for row in 0..<self.BOARD_SIZE_ROW {
+            for col in 0..<self.BOARD_SIZE_COL {
                 let square = board.squares[row][col]
-                let squareSize: CGFloat = self.boardView.frame.width / CGFloat(squareSideLength)
                 let squareButton = SquareButton(squareModel: square, squareSize: squareSize, squareMargin: 1)
                 squareButton.setTitleColor(UIColor.darkGray, for: .normal)
                 squareButton.addTarget(self, action: #selector(squareButtonPressed), for: .touchUpInside)  // Selector(("squareButtonPressed:"))
@@ -247,6 +272,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        updateOrientationUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
+        
         self.initializeBoard()
         self.startNewGame()
         
@@ -287,9 +315,44 @@ class ViewController: UIViewController {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {  // eemalda ?
-        self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
-        super.init(coder: aDecoder)
+    // see fn kutsutakse välja kui traitidega muutub midagi
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateOrientationUI()
+    }
+    
+    @objc func updateOrientationUI() {
+        var orientationText = "Orient: "
+        switch UIDevice.current.orientation {
+        case .faceUp:
+            orientationText += "faceUp"
+        case .faceDown:
+            orientationText += "faceDown"
+        case .landscapeLeft:
+            orientationText += "landscapeLeft"
+        case .landscapeRight:
+            orientationText += "landscapeRight"
+        case .portrait:
+            orientationText += "portrait"
+        case .portraitUpsideDown:
+            orientationText += "portraitUpsideDown"
+        case .unknown:
+            orientationText += "unknown"
+        default:
+            orientationText += "new"
+        }
+        // print("updateOrientationUI \(orientationText)")
+    }
+    
+    // kui kogu kontrolleri suurus muutub
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        updateOrientationUI()
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateOrientationUI()
     }
     
     

@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,11 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ih-Ts-Cz3">
-                                <rect key="frame" x="16" y="124" width="382" height="722"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <rect key="contentStretch" x="1" y="1" width="1" height="1"/>
-                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="vRJ-lU-Fxj">
                                 <rect key="frame" x="16" y="60" width="382" height="48"/>
                                 <subviews>
@@ -66,20 +62,30 @@
                                 </subviews>
                                 <variation key="heightClass=compact" axis="vertical" spacing="1"/>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Dyo-Ml-Yac">
+                                <rect key="frame" x="16" y="124" width="382" height="722"/>
+                                <variation key="heightClass=compact" axis="horizontal"/>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="leading" secondItem="QYN-DM-OeZ" secondAttribute="leading" constant="16" id="0Wp-Ps-RhT"/>
+                            <constraint firstItem="Dyo-Ml-Yac" firstAttribute="leading" secondItem="QYN-DM-OeZ" secondAttribute="leading" constant="16" id="1wL-9q-cmS"/>
                             <constraint firstItem="vRJ-lU-Fxj" firstAttribute="top" secondItem="QYN-DM-OeZ" secondAttribute="top" constant="16" id="23g-V1-8YC"/>
                             <constraint firstItem="vRJ-lU-Fxj" firstAttribute="top" secondItem="QYN-DM-OeZ" secondAttribute="top" constant="16" id="3yK-Gk-dCT"/>
-                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="top" secondItem="QYN-DM-OeZ" secondAttribute="top" constant="16" id="COW-hy-JUr"/>
                             <constraint firstItem="QYN-DM-OeZ" firstAttribute="bottom" secondItem="vRJ-lU-Fxj" secondAttribute="bottom" constant="329" id="Gzc-Cb-FXz"/>
-                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="leading" secondItem="vRJ-lU-Fxj" secondAttribute="trailing" constant="16" id="P1n-vg-X7U"/>
+                            <constraint firstItem="Dyo-Ml-Yac" firstAttribute="leading" secondItem="vRJ-lU-Fxj" secondAttribute="trailing" constant="-75" id="S5L-MR-H59">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
                             <constraint firstItem="QYN-DM-OeZ" firstAttribute="trailing" secondItem="vRJ-lU-Fxj" secondAttribute="trailing" constant="16" id="TYf-Ia-b7u"/>
-                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="bottom" secondItem="9Ih-Ts-Cz3" secondAttribute="bottom" constant="16" id="UGt-R3-MnU"/>
-                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="top" secondItem="vRJ-lU-Fxj" secondAttribute="bottom" constant="16" id="eaC-F1-fD2"/>
-                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="trailing" secondItem="9Ih-Ts-Cz3" secondAttribute="trailing" constant="16" id="iPS-kc-CMa"/>
-                            <constraint firstItem="9Ih-Ts-Cz3" firstAttribute="top" secondItem="QYN-DM-OeZ" secondAttribute="top" constant="80" id="kWG-Hx-XeO"/>
+                            <constraint firstItem="Dyo-Ml-Yac" firstAttribute="bottom" secondItem="QYN-DM-OeZ" secondAttribute="bottom" constant="453" id="Xes-bp-7lJ">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
+                            <constraint firstItem="Dyo-Ml-Yac" firstAttribute="top" secondItem="vRJ-lU-Fxj" secondAttribute="bottom" constant="16" id="Y6t-uA-3Df"/>
+                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="bottom" secondItem="Dyo-Ml-Yac" secondAttribute="bottom" constant="16" id="YZV-h8-zrs"/>
+                            <constraint firstItem="Dyo-Ml-Yac" firstAttribute="top" secondItem="QYN-DM-OeZ" secondAttribute="top" constant="124" id="Yb8-EB-cqf">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
+                            <constraint firstItem="QYN-DM-OeZ" firstAttribute="trailing" secondItem="Dyo-Ml-Yac" secondAttribute="trailing" constant="16" id="hzQ-5N-phj"/>
                             <constraint firstItem="QYN-DM-OeZ" firstAttribute="bottom" secondItem="vRJ-lU-Fxj" secondAttribute="bottom" constant="16" id="mxP-lR-oRY"/>
                             <constraint firstItem="vRJ-lU-Fxj" firstAttribute="leading" secondItem="QYN-DM-OeZ" secondAttribute="leading" constant="16" id="sD2-Eo-dKm"/>
                         </constraints>
@@ -88,29 +94,30 @@
                             <mask key="constraints">
                                 <exclude reference="Gzc-Cb-FXz"/>
                                 <exclude reference="mxP-lR-oRY"/>
+                                <exclude reference="S5L-MR-H59"/>
+                                <exclude reference="Xes-bp-7lJ"/>
+                                <exclude reference="Yb8-EB-cqf"/>
                                 <exclude reference="3yK-Gk-dCT"/>
-                                <exclude reference="COW-hy-JUr"/>
-                                <exclude reference="P1n-vg-X7U"/>
-                                <exclude reference="kWG-Hx-XeO"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <exclude reference="Gzc-Cb-FXz"/>
                                 <exclude reference="TYf-Ia-b7u"/>
+                                <exclude reference="YZV-h8-zrs"/>
                                 <include reference="mxP-lR-oRY"/>
+                                <exclude reference="1wL-9q-cmS"/>
+                                <include reference="S5L-MR-H59"/>
+                                <include reference="Xes-bp-7lJ"/>
+                                <exclude reference="Y6t-uA-3Df"/>
+                                <include reference="Yb8-EB-cqf"/>
                                 <exclude reference="23g-V1-8YC"/>
                                 <include reference="3yK-Gk-dCT"/>
-                                <exclude reference="0Wp-Ps-RhT"/>
-                                <include reference="COW-hy-JUr"/>
-                                <include reference="P1n-vg-X7U"/>
-                                <exclude reference="eaC-F1-fD2"/>
-                                <exclude reference="kWG-Hx-XeO"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="boardView" destination="9Ih-Ts-Cz3" id="VKy-Fg-kHm"/>
+                        <outlet property="boardView" destination="Dyo-Ml-Yac" id="cNZ-NN-wt1"/>
                         <outlet property="bombsLeftLabel" destination="siz-Ff-4Lf" id="M6M-7L-QUf"/>
                         <outlet property="gameLabel" destination="xpF-vC-5aH" id="uPB-Hf-Spq"/>
                         <outlet property="timeLabel" destination="b5h-wW-dnh" id="uVU-B0-iZp"/>

@@ -64,8 +64,9 @@
                                         </subviews>
                                         <variation key="heightClass=compact" axis="vertical" spacing="1"/>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2kR-6D-Gwt">
+                                    <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="2kR-6D-Gwt">
                                         <rect key="frame" x="0.0" y="64" width="382" height="722"/>
+                                        <variation key="heightClass=compact" axis="vertical"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>

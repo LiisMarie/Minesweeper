@@ -52,8 +52,6 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var bombsLeftLabel: UILabel!
-    //@IBOutlet weak var boardView: UIView!
-    //@IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var gameLabel: UIButton!
     
@@ -85,25 +83,67 @@ class ViewController: UIViewController {
         return squareSize
     }
     
-    func initializeBoard() {
-        // TODO dynamically changing board size
-        for view in boardView.subviews {
-            view.removeFromSuperview()
+    func emptyBoardStack() {
+        for stack in boardView.subviews {
+            for btn in stack.subviews {
+                btn.removeFromSuperview()
+            }
+            stack.removeFromSuperview()
         }
+    }
+    
+    func initializeBoard() {
+        emptyBoardStack()
+        
         self.squareButtons = []
         
         let squareSize = calculateDimensionsForBoard()
         
         for row in 0..<self.BOARD_SIZE_ROW {
+            
+            let stackRow = makeNewStack(horizontal: true)
             for col in 0..<self.BOARD_SIZE_COL {
                 let square = board.squares[row][col]
                 let squareButton = SquareButton(squareModel: square, squareSize: squareSize, squareMargin: 1)
                 squareButton.setTitleColor(UIColor.darkGray, for: .normal)
                 squareButton.addTarget(self, action: #selector(squareButtonPressed), for: .touchUpInside)  // Selector(("squareButtonPressed:"))
-                self.boardView.addSubview(squareButton)
+                stackRow.addArrangedSubview(squareButton)
+                boardView.addArrangedSubview(stackRow)
                 self.squareButtons.append(squareButton)
             }
         }
+        
+        setStartedOrientation()
+        
+    }
+    
+    func setStartedOrientation() {
+        switch UIDevice.current.orientation {
+        case .landscapeLeft:
+            self.phoneIsInPortrait = false
+        case .landscapeRight:
+            self.phoneIsInPortrait = false
+        case .portrait:
+            self.phoneIsInPortrait = true
+        case .portraitUpsideDown:
+            //orientationText += "portraitUpsideDown"
+            break
+        default:
+            break
+        }
+    }
+    
+    func makeNewStack(horizontal: Bool) -> UIStackView {
+        let columnStack = UIStackView()  // teeme tyhja stacki
+        if horizontal {
+            columnStack.axis = .horizontal
+        } else {
+            columnStack.axis = .vertical
+        }
+        columnStack.alignment = .fill
+        columnStack.distribution = .fillEqually
+        columnStack.spacing = 1.0
+        return columnStack
     }
     
      @objc func squareButtonPressed(sender: SquareButton) {
@@ -165,7 +205,6 @@ class ViewController: UIViewController {
     func openNeighborsOfEmptyCell(squareButton: SquareButton) {
         if squareButton.getLabelText() != "" {
             openSquareButton(squareButton: squareButton)
-            //return
         } else {
             openSquareButton(squareButton: squareButton)
             let adjacentOffsets = [(0,-1),(-1,0),(1,0),(0,1)]
@@ -284,10 +323,6 @@ class ViewController: UIViewController {
         
         updateOrientationUI()
         NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
-        /*
-        self.initializeBoard()
-        self.startNewGame()*/
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -344,10 +379,16 @@ class ViewController: UIViewController {
             orientationText += "faceDown"
         case .landscapeLeft:
             orientationText += "landscapeLeft"
+            //print("turning to LANDSCAPE")
+            turnGameBoardToLandscape()
         case .landscapeRight:
             orientationText += "landscapeRight"
+            //print("turning to LANDSCAPE")
+            turnGameBoardToLandscape()
         case .portrait:
             orientationText += "portrait"
+            //print("turning to PORTRAIT")
+            turnGameBoardToPortrait()
         case .portraitUpsideDown:
             orientationText += "portraitUpsideDown"
         case .unknown:
@@ -356,6 +397,66 @@ class ViewController: UIViewController {
             orientationText += "new"
         }
         // print("updateOrientationUI \(orientationText)")
+    }
+    
+    func turnGameBoardToLandscape() {
+        if phoneIsInPortrait {
+            turnDiffWay()
+        } else {
+            turnSameWay()
+        }
+    }
+    
+    func turnSameWay() {
+        var stacksToAdd : [UIStackView] = []
+        
+        
+        for stack in boardView.subviews {
+            
+            let newStack = makeNewStack(horizontal: true)
+            for btn in stack.subviews {
+                
+                btn.removeFromSuperview()
+                newStack.addArrangedSubview(btn)
+            }
+            stacksToAdd.append(newStack)
+            stack.removeFromSuperview()
+        }
+        
+        for stack in stacksToAdd {
+            boardView.addArrangedSubview(stack)
+        }
+        boardView.axis = .vertical
+    }
+    
+    func turnDiffWay() {
+        var stacksToAdd : [UIStackView] = []
+        
+        
+        for stack in boardView.subviews {
+            
+            let newStack = makeNewStack(horizontal: false)
+            for btn in stack.subviews {
+                
+                btn.removeFromSuperview()
+                newStack.addArrangedSubview(btn)
+            }
+            stacksToAdd.append(newStack)
+            stack.removeFromSuperview()
+        }
+        
+        for stack in stacksToAdd {
+            boardView.addArrangedSubview(stack)
+        }
+        boardView.axis = .horizontal
+    }
+    
+    func turnGameBoardToPortrait() {
+        if !phoneIsInPortrait {
+            turnDiffWay()
+        } else {
+            turnSameWay()
+        }
     }
     
     // kui kogu kontrolleri suurus muutub

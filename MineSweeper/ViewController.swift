@@ -10,15 +10,15 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var BOARD_SIZE_ROW: Int = 800
-    var BOARD_SIZE_COL: Int = 8000
+    var BOARD_SIZE_ROW: Int = 15
+    var BOARD_SIZE_COL: Int = 15
     var board: Board
     var squareButtons: [SquareButton] = []
     var gameOn = false
     var currentlyPlacingFlags = false
     var difficulty: Int = 10
     
-    var phoneIsInPortrait = true
+    var gameStartedInPortrait = true
     
     let unopenedColor = #colorLiteral(red: 0.5723067522, green: 0.5723067522, blue: 0.5723067522, alpha: 1)
     let openedColor = #colorLiteral(red: 0.7436007261, green: 0.7436007261, blue: 0.7436007261, alpha: 1)
@@ -55,12 +55,65 @@ class ViewController: UIViewController {
     @IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var gameLabel: UIButton!
     
-    required init?(coder aDecoder: NSCoder) {  // eemalda ?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        
+        updateOrientationUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.initializeBoard()
+        self.startNewGame()
+    }
+    
+    // resets board with new mine locations and resets all buttons to their default state, also defines how many mines are on the board in total
+    func resetBoard() {
+        self.board.resetBoard(difficulty: self.difficulty)
+        // iterates through each button and resets it to default settings
+        for squareButton in self.squareButtons {
+            squareButton.backgroundColor = unopenedColor
+            squareButton.setTitle("", for: .normal)
+            squareButton.flagPlaced = false
+        }
+        self.bombsLeft = self.board.squaresWithMines.count
+    }
+    
+    // logic for starting a new game
+    func startNewGame() {
+        self.initializeBoard()  // init board
+        self.resetBoard()  // reset the board
+        self.gameLabel.setTitle(gameOnText, for: .normal)  // set game label
+        
+        // setting up timer
+        self.timeTaken = 0
+        self.oneSecondTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(oneSecond), userInfo: nil, repeats: true)
+        
+        self.gameOn = true  // game is on
+        
+        self.bombsLeft = self.board.squaresWithMines.count  // bombs left count setting
+    }
+    
+    // for timer to count seconds
+    @objc func oneSecond() {
+        self.timeTaken += 1
+    }
+    
+    // start a new game when button is pressed to do so
+    @IBAction func newGamePressed(_ sender: Any) {
+        self.endCurrentGame()
+        print("new game")
+        self.startNewGame()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
         super.init(coder: aDecoder)
     }
     
-    func calculateDimensionsForBoard() -> CGFloat {
+    // calculates max row, col and game element size based on screen size
+    func calculateLimitsForGameBoard() -> CGFloat {
         
         let minFromRowCol = min(BOARD_SIZE_ROW, BOARD_SIZE_COL)
         let frameWidth = self.boardView.frame.width
@@ -83,6 +136,7 @@ class ViewController: UIViewController {
         return squareSize
     }
     
+    // empties the gameboard
     func emptyBoardStack() {
         for stack in boardView.subviews {
             for btn in stack.subviews {
@@ -92,12 +146,13 @@ class ViewController: UIViewController {
         }
     }
     
+    // makes gameboard, adds buttons and functionality
     func initializeBoard() {
         emptyBoardStack()
         
         self.squareButtons = []
         
-        let squareSize = calculateDimensionsForBoard()
+        let squareSize = calculateLimitsForGameBoard()
         
         for row in 0..<self.BOARD_SIZE_ROW {
             
@@ -114,17 +169,17 @@ class ViewController: UIViewController {
         }
         
         setStartedOrientation()
-        
     }
     
+    // sets wheteher game was started in portrait or landscape mode
     func setStartedOrientation() {
         switch UIDevice.current.orientation {
         case .landscapeLeft:
-            self.phoneIsInPortrait = false
+            self.gameStartedInPortrait = false
         case .landscapeRight:
-            self.phoneIsInPortrait = false
+            self.gameStartedInPortrait = false
         case .portrait:
-            self.phoneIsInPortrait = true
+            self.gameStartedInPortrait = true
         case .portraitUpsideDown:
             //orientationText += "portraitUpsideDown"
             break
@@ -133,6 +188,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // makes new stack for gameboard, if horizontal is true then it will be a horizontal stack, else it will be a vertical one
     func makeNewStack(horizontal: Bool) -> UIStackView {
         let columnStack = UIStackView()  // teeme tyhja stacki
         if horizontal {
@@ -146,23 +202,21 @@ class ViewController: UIViewController {
         return columnStack
     }
     
+    // handles game element presses
      @objc func squareButtonPressed(sender: SquareButton) {
         print("Pressed row:\(sender.square.row), col:\(sender.square.col)")
         
         if self.gameOn {
             
             if !currentlyPlacingFlags && !sender.flagPlaced {  // if player isnt currently placing flags and current location has no flag
-                if (!sender.square.isRevealed) {
+                if (!sender.square.isRevealed) {  // if square isnt opened yet, open it
                     openSquareButton(squareButton: sender)
                 }
-                if sender.square.isMineLocation {
+                if sender.square.isMineLocation {  // if in the location is a mine
                     // player pressed on mine
-                    self.endCurrentGame()
-                    self.showAllBombs()
-                    sender.backgroundColor = boomedMineColor
-                    self.gameLabel.setTitle(gameLostText, for: .normal)
+                    self.endGamePlayerLost(sender: sender)
                 }
-                if sender.getLabelText() == "" {
+                if sender.getLabelText() == "" {  // if the place where player clicked was empty, then open neighboring cells
                     print("will have to open neighbors")
                     self.openNeighborsOfEmptyCell(squareButton: sender)
                 }
@@ -171,28 +225,30 @@ class ViewController: UIViewController {
                     // theres already a flag, remove it
                     sender.setTitle("", for: .normal)
                     sender.flagPlaced = false
-                    self.bombsLeft += 1
+                    self.bombsLeft += 1  // one possible bomb added
                 } else {
                     // theres no flag, so place the flag
                     sender.setTitle(flag, for: .normal)
                     sender.flagPlaced = true
-                    self.bombsLeft -= 1
+                    self.bombsLeft -= 1  // one possible bomb removed
                 }
             }
-            if self.hasGameBeenWon() {
-                self.endGamePlayerWon()
+            if self.hasGameBeenWon() {  // check if player won after move was made
+                self.endGamePlayerWon()  // end game as player won
             }
             
         }
         
     }
     
+    // logic for opening given button
     func openSquareButton(squareButton: SquareButton) {
         squareButton.square.isRevealed = true
         squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
         squareButton.backgroundColor = openedColor
     }
     
+    // takes in a square and finds corresponding button for it
     func findSquareButtonBySquare(square: Square) -> SquareButton? {
         for squareButton in squareButtons {
             if squareButton.square.row == square.row && squareButton.square.col == square.col {
@@ -202,10 +258,11 @@ class ViewController: UIViewController {
         return nil
     }
     
+    // logic for opening neighbor cells
     func openNeighborsOfEmptyCell(squareButton: SquareButton) {
-        if squareButton.getLabelText() != "" {
+        if squareButton.getLabelText() != "" {  // if theres a number on given cell, open it but don't go to open its neighbors
             openSquareButton(squareButton: squareButton)
-        } else {
+        } else {  // given button was empty, find its neighbors and call method openNeighborsOfEmptyCell on them also
             openSquareButton(squareButton: squareButton)
             let adjacentOffsets = [(0,-1),(-1,0),(1,0),(0,1)]
             for (rowOffset,colOffset) in adjacentOffsets {
@@ -226,7 +283,8 @@ class ViewController: UIViewController {
         }
     }
     
-    func hasGameBeenWon() -> Bool {  // TODO
+    // logic for checking whether game has been won or not
+    func hasGameBeenWon() -> Bool {
         // returns true if game has been won
         if self.bombsLeft == 0 {
             var flaggedBombs = 0
@@ -250,47 +308,21 @@ class ViewController: UIViewController {
         return false
     }
     
-    func endGamePlayerWon() { // TODO
-        // logic upon game has been won
+    // logic upon game has been lost
+    func endGamePlayerLost(sender: SquareButton) {
+        self.endCurrentGame()  // end game
+        self.showAllBombs()  // reveal all bombs on the board
+        sender.backgroundColor = boomedMineColor
+        self.gameLabel.setTitle(gameLostText, for: .normal)
+    }
+    
+    // logic upon game has been won
+    func endGamePlayerWon() {
         self.gameLabel.setTitle(gameWonText, for: .normal)
         self.endCurrentGame()
     }
     
-    func showAllBombs() {
-        // shows all bombs
-        for squareButton in squareButtons {
-            if !squareButton.square.isRevealed {  // if button hasnt been revealed
-                
-                if squareButton.square.isMineLocation {  // if at button location is a mine
-                    
-                    if !squareButton.flagPlaced {  // if theres no flag
-                        squareButton.backgroundColor = openedColor
-                        squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
-                    }
-                    // if there is a flag, it just remains like that
-                } else {  // there is no mine
-                    if squareButton.flagPlaced {  // theres a flag
-                        squareButton.backgroundColor = openedColor
-                        squareButton.setTitle("❌", for: .normal)
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    func resetBoard() {
-        // resets board with new mine locations & sets isRevealed to false for each square
-        self.board.resetBoard(difficulty: self.difficulty)
-        // iterates through each button and resets it to default
-        for squareButton in self.squareButtons {
-            squareButton.backgroundColor = unopenedColor
-            squareButton.setTitle("", for: .normal)
-            squareButton.flagPlaced = false
-        }
-        self.bombsLeft = self.board.squaresWithMines.count
-    }
-    
+    // logic for ending game
     func endCurrentGame() {
         if self.oneSecondTimer != nil {
             self.oneSecondTimer!.invalidate()
@@ -299,43 +331,30 @@ class ViewController: UIViewController {
         self.gameOn = false
     }
     
-    func startNewGame() {
-        // start new game
-        self.initializeBoard()
-        self.resetBoard()
-        self.gameLabel.setTitle(gameOnText, for: .normal)
-        
-        self.timeTaken = 0
-        self.oneSecondTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(oneSecond), userInfo: nil, repeats: true)
-        
-        self.gameOn = true
-        
-        self.bombsLeft = self.board.squaresWithMines.count
+    // reveals all bombs on gameboard for the player
+    func showAllBombs() {
+        for squareButton in squareButtons {
+            if !squareButton.square.isRevealed {  // if button hasnt been revealed
+                
+                if squareButton.square.isMineLocation {  // if at button location is a mine
+                    
+                    if !squareButton.flagPlaced {  // if theres no flag, reveal bomb
+                        squareButton.backgroundColor = openedColor
+                        squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
+                    }
+                    // if there is a flag, it just remains like that as the flag was placed correctly
+                    
+                } else {  // there is no mine
+                    if squareButton.flagPlaced {  // theres a flag which is placed uncorrectly
+                        squareButton.backgroundColor = openedColor
+                        squareButton.setTitle("❌", for: .normal)
+                    }
+                }
+            }
+        }
     }
     
-    @objc func oneSecond() {
-        self.timeTaken += 1
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        updateOrientationUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        self.initializeBoard()
-        self.startNewGame()
-    }
-
-    @IBAction func newGamePressed(_ sender: Any) {
-        self.endCurrentGame()
-        print("new game")
-        self.startNewGame()
-    }
-    
+    // sets mode whether player is placing flags or not
     @IBAction func bombFlagSegmentedControl(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             self.currentlyPlacingFlags = false
@@ -346,6 +365,7 @@ class ViewController: UIViewController {
         
     }
     
+    // sets difficulty for the next started game
     @IBAction func changeOfLevel(_ sender: UIButton) {
         switch sender.title(for: .normal) {
         case "L1":
@@ -370,6 +390,7 @@ class ViewController: UIViewController {
         updateOrientationUI()
     }
     
+    // handles phone orientation changes
     @objc func updateOrientationUI() {
         var orientationText = "Orient: "
         switch UIDevice.current.orientation {
@@ -399,63 +420,44 @@ class ViewController: UIViewController {
         // print("updateOrientationUI \(orientationText)")
     }
     
+    // logic for handling the gameboard when phone is turned to landscape
     func turnGameBoardToLandscape() {
-        if phoneIsInPortrait {
-            turnDiffWay()
-        } else {
-            turnSameWay()
+        if gameStartedInPortrait {  // if game was initialized in portrait mode
+            turnGameBoard(horizontal: false)
+        } else {  // if game was initialized in landscape mode
+            turnGameBoard(horizontal: true)
         }
     }
     
-    func turnSameWay() {
-        var stacksToAdd : [UIStackView] = []
-        
-        
-        for stack in boardView.subviews {
-            
-            let newStack = makeNewStack(horizontal: true)
-            for btn in stack.subviews {
-                
-                btn.removeFromSuperview()
-                newStack.addArrangedSubview(btn)
-            }
-            stacksToAdd.append(newStack)
-            stack.removeFromSuperview()
-        }
-        
-        for stack in stacksToAdd {
-            boardView.addArrangedSubview(stack)
-        }
-        boardView.axis = .vertical
-    }
-    
-    func turnDiffWay() {
-        var stacksToAdd : [UIStackView] = []
-        
-        
-        for stack in boardView.subviews {
-            
-            let newStack = makeNewStack(horizontal: false)
-            for btn in stack.subviews {
-                
-                btn.removeFromSuperview()
-                newStack.addArrangedSubview(btn)
-            }
-            stacksToAdd.append(newStack)
-            stack.removeFromSuperview()
-        }
-        
-        for stack in stacksToAdd {
-            boardView.addArrangedSubview(stack)
-        }
-        boardView.axis = .horizontal
-    }
-    
+    // logic for handling the gameboard when phone is turned to portrait
     func turnGameBoardToPortrait() {
-        if !phoneIsInPortrait {
-            turnDiffWay()
+        if !gameStartedInPortrait {  // if game was initialized in landscape mode
+            turnGameBoard(horizontal: false)
+        } else {  // if game was initialized in portrait mode
+            turnGameBoard(horizontal: true)
+        }
+    }
+    
+    func turnGameBoard(horizontal: Bool) {
+        var stacksToAdd : [UIStackView] = []
+        
+        for stack in boardView.subviews {  // go through all old stacks in board
+            let newStack = makeNewStack(horizontal: horizontal)  // makes new stack where to put buttons
+            for btn in stack.subviews {  // goes through all buttons that are in old stack
+                btn.removeFromSuperview()  // removes button from old stack
+                newStack.addArrangedSubview(btn)  // adds button to new stack
+            }
+            stacksToAdd.append(newStack)
+            stack.removeFromSuperview()  // removes old stack from the board
+        }
+        
+        for stack in stacksToAdd {
+            boardView.addArrangedSubview(stack)  // adds new stack to board
+        }
+        if horizontal {
+            boardView.axis = .vertical
         } else {
-            turnSameWay()
+            boardView.axis = .horizontal
         }
     }
     
@@ -465,11 +467,9 @@ class ViewController: UIViewController {
         updateOrientationUI()
     }
     
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateOrientationUI()
     }
-    
     
 }

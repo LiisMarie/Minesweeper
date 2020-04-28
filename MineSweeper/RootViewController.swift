@@ -10,9 +10,12 @@ import UIKit
 
 class RootViewController: UIViewController {
     
-    @IBOutlet weak var levelDifficulty: UISegmentedControl!
+    @IBOutlet weak var levelDifficultySegmentControl: UISegmentedControl!
+    @IBOutlet weak var themeSegmentControl: UISegmentedControl!
     
-    private var difficulty: Int = 10
+    var difficulty: Int = 10
+        
+    var theme: String = "Regular"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,16 +26,22 @@ class RootViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if levelDifficulty.selectedSegmentIndex == 0 {
-            difficulty = 10
-        } else if levelDifficulty.selectedSegmentIndex == 1 {
-            difficulty = 20
-        } else if levelDifficulty.selectedSegmentIndex == 2 {
-            difficulty = 30
+        if difficulty == 10 {
+            levelDifficultySegmentControl.selectedSegmentIndex = 0
+        } else if difficulty == 20 {
+            levelDifficultySegmentControl.selectedSegmentIndex = 1
+        } else if difficulty == 30 {
+            levelDifficultySegmentControl.selectedSegmentIndex = 2
+        } else {
+            levelDifficultySegmentControl.selectedSegmentIndex = -1
         }
+        
+        //btnBackToGame.titleEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        //btnBackToGame.layer.cornerRadius = 10
     }
     
-
+    @IBOutlet weak var btnBackToGame: UIButton!
+    
     
     // MARK: - Navigation
 
@@ -48,19 +57,38 @@ class RootViewController: UIViewController {
             case "Back to game":
                 if let viewControllerWeAreSegueingTo = segue.destination as? GameViewController {
                     // dont access outlets, they are not set yet. it will crash
-                    if levelDifficulty.selectedSegmentIndex == 0 {
-                        difficulty = 10
-                    } else if levelDifficulty.selectedSegmentIndex == 1 {
-                        difficulty = 20
-                    } else if levelDifficulty.selectedSegmentIndex == 2 {
-                        difficulty = 30
-                    }
+
                     viewControllerWeAreSegueingTo.difficulty = difficulty
+                    viewControllerWeAreSegueingTo.theme = theme
+                }
+            case "Custom settings":
+                if let viewControllerWeAreSegueingTo = segue.destination as? GameViewController {
+                    // dont access outlets, they are not set yet. it will crash
+
+                    viewControllerWeAreSegueingTo.theme = theme
                 }
             default:
                 print("No case for this segue \(identifier)")
             }
                     
+        }
+    }
+    
+    @IBAction func levelChanged(_ sender: Any) {
+        if levelDifficultySegmentControl.selectedSegmentIndex == 0 {
+            difficulty = 10
+        } else if levelDifficultySegmentControl.selectedSegmentIndex == 1 {
+            difficulty = 20
+        } else if levelDifficultySegmentControl.selectedSegmentIndex == 2 {
+            difficulty = 30
+        }
+    }
+    
+    @IBAction func themeChanged(_ sender: Any) {
+        if themeSegmentControl.selectedSegmentIndex == 0 {
+            theme = "Classical"
+        } else if themeSegmentControl.selectedSegmentIndex == 1 {
+            theme = "Fancy"
         }
     }
     

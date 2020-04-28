@@ -10,6 +10,14 @@ import UIKit
 
 class GameViewController: UIViewController {
     
+    /*
+     sending data to root
+     
+     if let rootVC = navigationController?.viewControllers.first as? RootViewController {
+         rootVC.difficulty = difficulty
+     }
+     */
+    
     var BOARD_SIZE_ROW: Int = 15
     var BOARD_SIZE_COL: Int = 15
     var board: Board
@@ -17,6 +25,8 @@ class GameViewController: UIViewController {
     var gameOn = false
     var currentlyPlacingFlags = false
     var difficulty: Int = 10
+    
+    var theme = "Classical"
     
     var gameStartedInPortrait = true
     
@@ -33,6 +43,7 @@ class GameViewController: UIViewController {
     let gameLostText = "😵"
     let gameWonText = "🥳"
     
+    var bombsInTotal: Int? = nil
     var bombsLeft: Int = 0
     {
         didSet {  // everytime the value changes, didset will be triggered
@@ -55,25 +66,18 @@ class GameViewController: UIViewController {
     @IBOutlet weak var boardView: UIStackView!
     @IBOutlet weak var gameLabel: UIButton!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         updateOrientationUI()
         NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print("GAAAME Ooooooooon " + String(gameOn))
-
-        if (!gameOn) {
-            self.initializeBoard()
-            self.startNewGame()
-        }
-    
-        print("GAAAME STARTEDDDDD " + String(gameOn))
+        self.initializeBoard()
+        self.startNewGame()
     }
     
     // resets board with new mine locations and resets all buttons to their default state, also defines how many mines are on the board in total
@@ -101,6 +105,12 @@ class GameViewController: UIViewController {
         self.gameOn = true  // game is on
         
         self.bombsLeft = self.board.squaresWithMines.count  // bombs left count setting
+        
+        if let rootVC = navigationController?.viewControllers.first as? RootViewController {
+            rootVC.difficulty = difficulty  // send current difficulty to root controller
+            rootVC.theme = theme 
+        }
+    
     }
     
     // for timer to count seconds
@@ -122,17 +132,39 @@ class GameViewController: UIViewController {
     
     // calculates max row, col and game element size based on screen size
     func calculateLimitsForGameBoard() -> CGFloat {
-        
         let minFromRowCol = min(BOARD_SIZE_ROW, BOARD_SIZE_COL)
         let frameWidth = self.boardView.frame.width
         let frameHeight = self.boardView.frame.height
-        var squareSize: CGFloat = min(frameHeight, frameWidth) / CGFloat(minFromRowCol)
+        var squareSize: CGFloat = min(frameHeight, frameWidth) / CGFloat(max(BOARD_SIZE_ROW, BOARD_SIZE_COL))
         
         if squareSize < 38.2 {
             squareSize = 38.2
         }
-        self.BOARD_SIZE_ROW = Int(frameHeight / squareSize)
-        self.BOARD_SIZE_COL = Int(frameWidth / squareSize)
+        
+        if bombsInTotal == nil {  // not a custom game
+            self.BOARD_SIZE_ROW = Int(frameHeight / squareSize)
+            self.BOARD_SIZE_COL = Int(frameWidth / squareSize)
+        } else {  // is a custom game
+            
+            let tempCol = self.BOARD_SIZE_COL
+            let tempRow = self.BOARD_SIZE_ROW
+            
+            if frameWidth < frameHeight {
+                self.BOARD_SIZE_COL = min(tempRow, tempCol)
+                self.BOARD_SIZE_ROW = max(tempCol, tempRow)
+            } else {
+                self.BOARD_SIZE_COL = max(tempRow, tempCol)
+                self.BOARD_SIZE_ROW = min(tempCol, tempRow)
+            }
+            
+            if frameWidth < CGFloat(self.BOARD_SIZE_COL) * squareSize {
+                self.BOARD_SIZE_COL = Int(frameWidth / squareSize)
+            }
+            if frameHeight < CGFloat(self.BOARD_SIZE_ROW) * squareSize {
+                self.BOARD_SIZE_ROW = Int(frameHeight / squareSize)
+            }
+        
+        }
         
         self.board = Board(sizeRow: BOARD_SIZE_ROW, sizeCol: BOARD_SIZE_COL)
 
@@ -213,6 +245,7 @@ class GameViewController: UIViewController {
     // handles game element presses
      @objc func squareButtonPressed(sender: SquareButton) {
         print("Pressed row:\(sender.square.row), col:\(sender.square.col)")
+        
         
         if self.gameOn {
             
@@ -373,26 +406,6 @@ class GameViewController: UIViewController {
         
     }
     
-    // sets difficulty for the next started game
-    @IBAction func changeOfLevel(_ sender: UIButton) {
-        switch sender.title(for: .normal) {
-        case "L1":
-            sender.setTitle("L2", for: .normal)
-            self.difficulty = 20
-            print("Player chose L2")
-        case "L2":
-            sender.setTitle("L3", for: .normal)
-            self.difficulty = 30
-            print("Player chose L3")
-        case "L3":
-            sender.setTitle("L1", for: .normal)
-            self.difficulty = 10
-            print("Player chose L1")
-        default:
-            print("Unknown value for level")
-        }
-    }
-    
     // see fn kutsutakse välja kui traitidega muutub midagi
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         updateOrientationUI()
@@ -478,6 +491,32 @@ class GameViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateOrientationUI()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("prepare for segue \(segue.identifier ?? "Segue identifier not set!")")
+        
+        if let identifier = segue.identifier {
+            switch identifier {
+            case "Back to game":
+                if let viewControllerWeAreSegueingTo = segue.destination as? GameViewController {
+                    // dont access outlets, they are not set yet. it will crash
+                    
+                    /*
+                    if levelDifficulty.selectedSegmentIndex == 0 {
+                        difficulty = 10
+                    } else if levelDifficulty.selectedSegmentIndex == 1 {
+                        difficulty = 20
+                    } else if levelDifficulty.selectedSegmentIndex == 2 {
+                        difficulty = 30
+                    }*/
+                    viewControllerWeAreSegueingTo.difficulty = difficulty
+                }
+            default:
+                print("No case for this segue \(identifier)")
+            }
+                    
+        }
     }
     	
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		233ABB822448547A0015DBD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233ABB812448547A0015DBD1 /* ViewController.swift */; };
+		233ABB822448547A0015DBD1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233ABB812448547A0015DBD1 /* GameViewController.swift */; };
 		233ABB8424485F730015DBD1 /* Square.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233ABB8324485F730015DBD1 /* Square.swift */; };
 		233ABB88244861530015DBD1 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233ABB87244861530015DBD1 /* Board.swift */; };
 		233ABB8A244870600015DBD1 /* SquareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233ABB89244870600015DBD1 /* SquareButton.swift */; };
@@ -16,10 +16,11 @@
 		233E14AD244659D1002C2828 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 233E14AB244659D1002C2828 /* Main.storyboard */; };
 		233E14AF244659D2002C2828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 233E14AE244659D2002C2828 /* Assets.xcassets */; };
 		233E14B2244659D2002C2828 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 233E14B0244659D2002C2828 /* LaunchScreen.storyboard */; };
+		2369320924581515000204BD /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2369320824581515000204BD /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		233ABB812448547A0015DBD1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		233ABB812448547A0015DBD1 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		233ABB8324485F730015DBD1 /* Square.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Square.swift; sourceTree = "<group>"; };
 		233ABB87244861530015DBD1 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		233ABB89244870600015DBD1 /* SquareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareButton.swift; sourceTree = "<group>"; };
@@ -30,6 +31,7 @@
 		233E14AE244659D2002C2828 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		233E14B1244659D2002C2828 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		233E14B3244659D2002C2828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2369320824581515000204BD /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,10 +70,11 @@
 				233E14AE244659D2002C2828 /* Assets.xcassets */,
 				233E14B0244659D2002C2828 /* LaunchScreen.storyboard */,
 				233E14B3244659D2002C2828 /* Info.plist */,
-				233ABB812448547A0015DBD1 /* ViewController.swift */,
+				233ABB812448547A0015DBD1 /* GameViewController.swift */,
 				233ABB8324485F730015DBD1 /* Square.swift */,
 				233ABB87244861530015DBD1 /* Board.swift */,
 				233ABB89244870600015DBD1 /* SquareButton.swift */,
+				2369320824581515000204BD /* RootViewController.swift */,
 			);
 			path = MineSweeper;
 			sourceTree = "<group>";
@@ -150,8 +153,9 @@
 				233ABB8424485F730015DBD1 /* Square.swift in Sources */,
 				233E14A6244659D1002C2828 /* AppDelegate.swift in Sources */,
 				233ABB8A244870600015DBD1 /* SquareButton.swift in Sources */,
+				2369320924581515000204BD /* RootViewController.swift in Sources */,
 				233ABB88244861530015DBD1 /* Board.swift in Sources */,
-				233ABB822448547A0015DBD1 /* ViewController.swift in Sources */,
+				233ABB822448547A0015DBD1 /* GameViewController.swift in Sources */,
 				233E14A8244659D1002C2828 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

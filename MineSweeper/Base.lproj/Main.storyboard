@@ -23,14 +23,25 @@
             </objects>
             <point key="canvasLocation" x="-42" y="-980"/>
         </scene>
-        <!--View Controller-->
+        <!--Root View Controller-->
         <scene sceneID="avR-Vv-SC7">
             <objects>
-                <viewController id="5as-Fh-qQB" sceneMemberID="viewController">
+                <viewController id="5as-Fh-qQB" customClass="RootViewController" customModule="MineSweeper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Xy-c2-rqs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TZ-fX-vYx">
+                                <rect key="frame" x="148" y="566" width="119" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" title="Back to game"/>
+                                <connections>
+                                    <segue destination="jbZ-Iu-lpA" kind="showDetail" identifier="Back to game" id="97o-6g-rRb"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDG-Aa-9ym">
                                 <rect key="frame" x="109" y="398" width="196" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -42,22 +53,23 @@
                                     <segue destination="tVc-rQ-R0d" kind="showDetail" id="1d7-JR-ba1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TZ-fX-vYx">
-                                <rect key="frame" x="148" y="566" width="119" height="36"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="V9f-TD-QkV">
+                                <rect key="frame" x="136" y="318" width="131" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" title="Back to game"/>
-                                <connections>
-                                    <segue destination="jbZ-Iu-lpA" kind="showDetail" id="97o-6g-rRb"/>
-                                </connections>
-                            </button>
+                                <segments>
+                                    <segment title="L1"/>
+                                    <segment title="L2"/>
+                                    <segment title="L3"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="Sn0-hE-Ahb"/>
                     </view>
                     <navigationItem key="navigationItem" id="2LX-C5-yiB"/>
+                    <connections>
+                        <outlet property="levelDifficulty" destination="V9f-TD-QkV" id="lSH-hT-hFD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nne-08-gtm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -76,10 +88,10 @@
             </objects>
             <point key="canvasLocation" x="-961" y="-656"/>
         </scene>
-        <!--View Controller-->
+        <!--Game View Controller-->
         <scene sceneID="8LB-ks-giP">
             <objects>
-                <viewController id="jbZ-Iu-lpA" customClass="ViewController" customModule="MineSweeper" sceneMemberID="viewController">
+                <viewController id="jbZ-Iu-lpA" customClass="GameViewController" customModule="MineSweeper" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nOU-NP-w5Z">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -174,6 +186,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QYN-DM-OeZ"/>
                     </view>
+                    <navigationItem key="navigationItem" id="rCY-B0-iBX"/>
                     <connections>
                         <outlet property="boardView" destination="2kR-6D-Gwt" id="MYR-aB-jqW"/>
                         <outlet property="bombsLeftLabel" destination="siz-Ff-4Lf" id="M6M-7L-QUf"/>
@@ -192,9 +205,23 @@
                     <view key="view" contentMode="scaleToFill" id="50L-fT-jCB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zwQ-1c-ORs">
+                                <rect key="frame" x="69" y="605" width="280" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" title="Start game with custom settings"/>
+                                <connections>
+                                    <segue destination="jbZ-Iu-lpA" kind="showDetail" identifier="Custom settings" id="PsK-1V-Yoh"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="aLH-jg-3hT"/>
                     </view>
+                    <navigationItem key="navigationItem" id="giv-Hf-tak"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oi4-yk-R9Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     
     var BOARD_SIZE_ROW: Int = 15
     var BOARD_SIZE_COL: Int = 15
@@ -66,6 +66,8 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print("GAAAME Ooooooooon " + String(gameOn))
+
         if (!gameOn) {
             self.initializeBoard()
             self.startNewGame()

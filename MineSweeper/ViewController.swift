@@ -61,11 +61,17 @@ class ViewController: UIViewController {
         
         updateOrientationUI()
         NotificationCenter.default.addObserver(self, selector: #selector(updateOrientationUI), name: UIDevice.orientationDidChangeNotification, object: nil)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.initializeBoard()
-        self.startNewGame()
+        if (!gameOn) {
+            self.initializeBoard()
+            self.startNewGame()
+        }
+    
+        print("GAAAME STARTEDDDDD " + String(gameOn))
     }
     
     // resets board with new mine locations and resets all buttons to their default state, also defines how many mines are on the board in total
@@ -471,5 +477,5 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
         updateOrientationUI()
     }
-    
+    	
 }

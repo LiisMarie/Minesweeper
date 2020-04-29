@@ -84,7 +84,7 @@
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <state key="normal" title="Custom settings"/>
                                         <connections>
-                                            <segue destination="tVc-rQ-R0d" kind="showDetail" identifier="To custom settings" id="1d7-JR-ba1"/>
+                                            <segue destination="tVc-rQ-R0d" kind="showDetail" identifier="Custom settings" id="1d7-JR-ba1"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4TZ-fX-vYx">
@@ -260,6 +260,9 @@
                                                     <segment title="Classical"/>
                                                     <segment title="Fancy"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="themeChanged:" destination="tVc-rQ-R0d" eventType="valueChanged" id="scP-Uk-8jT"/>
+                                                </connections>
                                             </segmentedControl>
                                         </subviews>
                                     </stackView>
@@ -379,6 +382,7 @@
                         <outlet property="minesStepper" destination="Wh2-5q-3su" id="ny5-xP-1cM"/>
                         <outlet property="rowLabel" destination="Tea-Ad-KAM" id="g0r-dX-beY"/>
                         <outlet property="rowStepper" destination="ehe-fJ-fbf" id="QVj-kh-pb2"/>
+                        <outlet property="themeSegmentControl" destination="huA-EH-bQL" id="Nhm-hs-bIF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oi4-yk-R9Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

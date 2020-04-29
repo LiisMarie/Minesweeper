@@ -16,6 +16,7 @@
 		233E14AD244659D1002C2828 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 233E14AB244659D1002C2828 /* Main.storyboard */; };
 		233E14AF244659D2002C2828 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 233E14AE244659D2002C2828 /* Assets.xcassets */; };
 		233E14B2244659D2002C2828 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 233E14B0244659D2002C2828 /* LaunchScreen.storyboard */; };
+		234557932459639500DF6B28 /* C.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234557922459639500DF6B28 /* C.swift */; };
 		2369320924581515000204BD /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2369320824581515000204BD /* RootViewController.swift */; };
 		2369320D2458319A000204BD /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2369320C2458319A000204BD /* UINavigationController.swift */; };
 		2369320F245846BB000204BD /* CustomSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2369320E245846BB000204BD /* CustomSettingsController.swift */; };
@@ -33,6 +34,7 @@
 		233E14AE244659D2002C2828 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		233E14B1244659D2002C2828 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		233E14B3244659D2002C2828 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		234557922459639500DF6B28 /* C.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C.swift; sourceTree = "<group>"; };
 		2369320824581515000204BD /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		2369320C2458319A000204BD /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		2369320E245846BB000204BD /* CustomSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSettingsController.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				2369320824581515000204BD /* RootViewController.swift */,
 				2369320C2458319A000204BD /* UINavigationController.swift */,
 				2369320E245846BB000204BD /* CustomSettingsController.swift */,
+				234557922459639500DF6B28 /* C.swift */,
 			);
 			path = MineSweeper;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 				233ABB8424485F730015DBD1 /* Square.swift in Sources */,
 				2369320D2458319A000204BD /* UINavigationController.swift in Sources */,
 				2369320F245846BB000204BD /* CustomSettingsController.swift in Sources */,
+				234557932459639500DF6B28 /* C.swift in Sources */,
 				233E14A6244659D1002C2828 /* AppDelegate.swift in Sources */,
 				233ABB8A244870600015DBD1 /* SquareButton.swift in Sources */,
 				2369320924581515000204BD /* RootViewController.swift in Sources */,

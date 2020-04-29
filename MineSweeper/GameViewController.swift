@@ -26,7 +26,7 @@ class GameViewController: UIViewController {
     var currentlyPlacingFlags = false
     var difficulty: Int = 10
     
-    var theme = "Classical"
+    var theme = C.THEME_ONE
     
     var gameStartedInPortrait = true
     
@@ -82,7 +82,12 @@ class GameViewController: UIViewController {
     
     // resets board with new mine locations and resets all buttons to their default state, also defines how many mines are on the board in total
     func resetBoard() {
-        self.board.resetBoard(difficulty: self.difficulty)
+        if bombsInTotal == nil {  // not a custom game
+            self.board.resetBoard(difficulty: self.difficulty)
+        } else {  // a custom game
+            self.board.resetBoardMinesDefined(amountOfMines: bombsInTotal!)
+        }
+        
         // iterates through each button and resets it to default settings
         for squareButton in self.squareButtons {
             squareButton.backgroundColor = unopenedColor
@@ -162,6 +167,11 @@ class GameViewController: UIViewController {
             }
             if frameHeight < CGFloat(self.BOARD_SIZE_ROW) * squareSize {
                 self.BOARD_SIZE_ROW = Int(frameHeight / squareSize)
+            }
+            
+            let maxAmountOfBombs = BOARD_SIZE_COL * BOARD_SIZE_ROW - 1
+            if bombsInTotal! > maxAmountOfBombs {
+                bombsInTotal = maxAmountOfBombs
             }
         
         }

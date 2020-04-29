@@ -38,6 +38,23 @@ class Board
         self.difficulty = difficulty
         determineSquaresThatHaveMines()
         
+        assignMinesCountNeighboringSquares()
+    }
+    
+    func resetBoardMinesDefined(amountOfMines: Int) {
+        squaresWithMines = []
+        squaresList = squaresList.shuffled()
+        var i = 0
+        while i < amountOfMines {
+            squaresWithMines.append(squaresList[i])
+            i += 1
+        }
+        print(squaresWithMines)
+        
+        assignMinesCountNeighboringSquares()
+    }
+    
+    func assignMinesCountNeighboringSquares() {
         // assign mines to squares
         for row in 0..<sizeRow{
             for col in 0..<sizeCol{

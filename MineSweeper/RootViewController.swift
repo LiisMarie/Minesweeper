@@ -15,7 +15,7 @@ class RootViewController: UIViewController {
     
     var difficulty: Int = 10
         
-    var theme: String = "Regular"
+    var theme: String = C.THEME_ONE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +34,12 @@ class RootViewController: UIViewController {
             levelDifficultySegmentControl.selectedSegmentIndex = 2
         } else {
             levelDifficultySegmentControl.selectedSegmentIndex = -1
+        }
+        
+        if theme == C.THEME_ONE {
+            themeSegmentControl.selectedSegmentIndex = 0
+        } else {
+            themeSegmentControl.selectedSegmentIndex = 1
         }
         
         //btnBackToGame.titleEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
@@ -62,7 +68,7 @@ class RootViewController: UIViewController {
                     viewControllerWeAreSegueingTo.theme = theme
                 }
             case "Custom settings":
-                if let viewControllerWeAreSegueingTo = segue.destination as? GameViewController {
+                if let viewControllerWeAreSegueingTo = segue.destination as? CustomSettingsController {
                     // dont access outlets, they are not set yet. it will crash
 
                     viewControllerWeAreSegueingTo.theme = theme
@@ -86,9 +92,9 @@ class RootViewController: UIViewController {
     
     @IBAction func themeChanged(_ sender: Any) {
         if themeSegmentControl.selectedSegmentIndex == 0 {
-            theme = "Classical"
+            theme = C.THEME_ONE
         } else if themeSegmentControl.selectedSegmentIndex == 1 {
-            theme = "Fancy"
+            theme = C.THEME_TWO
         }
     }
     

@@ -19,7 +19,13 @@ class CustomSettingsController: UIViewController {
     @IBOutlet weak var colStepper: UIStepper!
     @IBOutlet weak var rowStepper: UIStepper!
     
-    var theme: String = "Regular"
+    @IBOutlet weak var themeSegmentControl: UISegmentedControl!
+    
+    var amountOfCols : Int? = nil
+    var amountOfRows : Int? = nil
+    var amountOfMines : Int? = nil
+    
+    var theme: String = C.THEME_ONE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +35,20 @@ class CustomSettingsController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if amountOfRows != nil && amountOfCols != nil {
+            colStepper.value = Double(amountOfCols!)
+            rowStepper.value = Double(amountOfRows!)
+            //colStepper.setValue(amountOfCols, forKey: <#T##String#>)
+        }
         minesLabel.text = String(Int(minesStepper.value))
         colLabel.text = String(Int(colStepper.value))
         rowLabel.text = String(Int(rowStepper.value))
+        
+        if theme == C.THEME_ONE {
+            themeSegmentControl.selectedSegmentIndex = 0
+        } else if theme == C.THEME_TWO {
+            themeSegmentControl.selectedSegmentIndex = 1
+        }
     }
     
     
@@ -74,5 +91,15 @@ class CustomSettingsController: UIViewController {
         rowLabel.text = String(Int(sender.value))
     }
     
+    @IBAction func themeChanged(_ sender: Any) {
+        if themeSegmentControl.selectedSegmentIndex == 0 {
+            theme = C.THEME_ONE
+        } else if themeSegmentControl.selectedSegmentIndex == 1 {
+            theme = C.THEME_TWO
+        }
+        if let rootVC = navigationController?.viewControllers.first as? RootViewController {
+            rootVC.theme = theme
+        }
+    }
     
 }

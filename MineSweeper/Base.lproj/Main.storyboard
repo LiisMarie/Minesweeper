@@ -242,7 +242,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="dp4-y3-R4e">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dp4-y3-R4e">
                                 <rect key="frame" x="16" y="104.00000000000003" width="382" height="388.66666666666674"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="f5u-Gh-cXb">
@@ -266,7 +266,7 @@
                                             </segmentedControl>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Cdi-Fl-jQE">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Cdi-Fl-jQE">
                                         <rect key="frame" x="110.66666666666669" y="117.33333333333334" width="161" height="70"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount of mines" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsx-Zh-e6O">
@@ -275,16 +275,16 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vXx-tp-L1u">
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="vXx-tp-L1u">
                                                 <rect key="frame" x="14.333333333333329" y="36.333333333333343" width="132.33333333333337" height="33.666666666666657"/>
                                                 <subviews>
-                                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="625" translatesAutoresizingMaskIntoConstraints="NO" id="Wh2-5q-3su">
+                                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="625" translatesAutoresizingMaskIntoConstraints="NO" id="Wh2-5q-3su">
                                                         <rect key="frame" x="0.0" y="0.0" width="94" height="33.666666666666664"/>
                                                         <connections>
                                                             <action selector="minesStepper:" destination="tVc-rQ-R0d" eventType="valueChanged" id="fh1-lE-79I"/>
                                                         </connections>
                                                     </stepper>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGR-Sy-eDf">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGR-Sy-eDf">
                                                         <rect key="frame" x="114" y="0.0" width="18.333333333333343" height="33.666666666666664"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <nil key="textColor"/>
@@ -294,7 +294,7 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Xp-jY-7v2">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Xp-jY-7v2">
                                         <rect key="frame" x="50" y="237.33333333333334" width="282.33333333333331" height="68.333333333333343"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gameboard size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5en-ic-EEa">
@@ -368,11 +368,48 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="top" secondItem="aLH-jg-3hT" secondAttribute="top" constant="16.000000000000028" id="Aa8-lv-eZJ"/>
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="bottom" secondItem="aLH-jg-3hT" secondAttribute="bottom" constant="14" id="Aqv-2L-8VT">
+                                <variation key="heightClass=compact" constant="0.0"/>
+                            </constraint>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="leading" secondItem="aLH-jg-3hT" secondAttribute="leading" constant="16" id="Mt0-1n-eda"/>
                             <constraint firstItem="aLH-jg-3hT" firstAttribute="bottom" secondItem="dp4-y3-R4e" secondAttribute="bottom" constant="369.33333333333326" id="Pep-Ye-lsN"/>
                             <constraint firstItem="aLH-jg-3hT" firstAttribute="trailing" secondItem="dp4-y3-R4e" secondAttribute="trailing" constant="16" id="VFz-wK-vng"/>
+                            <constraint firstItem="aLH-jg-3hT" firstAttribute="trailing" secondItem="dp4-y3-R4e" secondAttribute="trailing" constant="196.33333333333337" id="hrt-98-n9o">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="top" secondItem="aLH-jg-3hT" secondAttribute="top" constant="20" id="kkJ-t3-OHv">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
+                            <constraint firstItem="aLH-jg-3hT" firstAttribute="bottom" secondItem="dp4-y3-R4e" secondAttribute="bottom" constant="140" id="vTu-gi-YdF">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="leading" secondItem="aLH-jg-3hT" secondAttribute="leading" constant="9" id="zQi-xt-Dhp">
+                                <variation key="heightClass=compact" constant="16"/>
+                            </constraint>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="aLH-jg-3hT"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="hrt-98-n9o"/>
+                                <exclude reference="vTu-gi-YdF"/>
+                                <exclude reference="Aqv-2L-8VT"/>
+                                <exclude reference="kkJ-t3-OHv"/>
+                                <exclude reference="zQi-xt-Dhp"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <exclude reference="Pep-Ye-lsN"/>
+                                <exclude reference="VFz-wK-vng"/>
+                                <include reference="hrt-98-n9o"/>
+                                <include reference="vTu-gi-YdF"/>
+                                <exclude reference="Aa8-lv-eZJ"/>
+                                <exclude reference="Aqv-2L-8VT"/>
+                                <exclude reference="Mt0-1n-eda"/>
+                                <include reference="kkJ-t3-OHv"/>
+                                <include reference="zQi-xt-Dhp"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Custom settings" id="giv-Hf-tak"/>
                     <connections>
@@ -387,7 +424,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oi4-yk-R9Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1240.5797101449277" y="-252.45535714285714"/>
+            <point key="canvasLocation" x="1240.1785714285713" y="-253.62318840579712"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

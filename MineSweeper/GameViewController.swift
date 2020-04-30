@@ -30,12 +30,16 @@ class GameViewController: UIViewController {
     
     var gameStartedInPortrait = true
     
+    let minSquareSideLength = 38.2
+    
+    /*
+     
+     */
+    
     let unopenedColor = #colorLiteral(red: 0.5723067522, green: 0.5723067522, blue: 0.5723067522, alpha: 1)
     let openedColor = #colorLiteral(red: 0.7436007261, green: 0.7436007261, blue: 0.7436007261, alpha: 1)
     let boomedMineColor = #colorLiteral(red: 0.9201895622, green: 0.3224265123, blue: 0.341611661, alpha: 1)
-    
-    let minSquareSideLength = 38.2
-    
+        
     let bomb = "💣"
     let flag = "🚩"
     
@@ -97,9 +101,18 @@ class GameViewController: UIViewController {
         self.bombsLeft = self.board.squaresWithMines.count
     }
     
+    func setTheme() {
+        if theme == C.THEME_ONE {  // regular
+            
+        } else if theme == C.THEME_TWO {  // food
+            
+        }
+    }
+    
     // logic for starting a new game
     func startNewGame() {
         self.initializeBoard()  // init board
+        self.setTheme()  // sets theme
         self.resetBoard()  // reset the board
         self.gameLabel.setTitle(gameOnText, for: .normal)  // set game label
         
@@ -501,32 +514,6 @@ class GameViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateOrientationUI()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("prepare for segue \(segue.identifier ?? "Segue identifier not set!")")
-        
-        if let identifier = segue.identifier {
-            switch identifier {
-            case "Back to game":
-                if let viewControllerWeAreSegueingTo = segue.destination as? GameViewController {
-                    // dont access outlets, they are not set yet. it will crash
-                    
-                    /*
-                    if levelDifficulty.selectedSegmentIndex == 0 {
-                        difficulty = 10
-                    } else if levelDifficulty.selectedSegmentIndex == 1 {
-                        difficulty = 20
-                    } else if levelDifficulty.selectedSegmentIndex == 2 {
-                        difficulty = 30
-                    }*/
-                    viewControllerWeAreSegueingTo.difficulty = difficulty
-                }
-            default:
-                print("No case for this segue \(identifier)")
-            }
-                    
-        }
     }
     	
 }

@@ -106,7 +106,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.94901960784313721" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.92941176470588238" green="0.98039215686274506" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Xmf-xO-xKG" firstAttribute="top" secondItem="Sn0-hE-Ahb" secondAttribute="top" constant="16" id="3pd-1U-KSc"/>
                             <constraint firstItem="Sn0-hE-Ahb" firstAttribute="trailing" secondItem="Xmf-xO-xKG" secondAttribute="trailing" constant="16" id="IiO-5M-dGr"/>
@@ -221,7 +221,7 @@
                                 </variation>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.94901960784313721" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.92941176470588238" green="0.98039215686274506" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="QYN-DM-OeZ" firstAttribute="bottom" secondItem="8Sh-1f-9ex" secondAttribute="bottom" constant="16" id="4eo-Xh-wCS"/>
                             <constraint firstItem="8Sh-1f-9ex" firstAttribute="leading" secondItem="QYN-DM-OeZ" secondAttribute="leading" constant="16" id="JdK-f8-Djt"/>
@@ -377,7 +377,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.94901960784313721" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.92941176470588238" green="0.98039215686274506" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="top" secondItem="aLH-jg-3hT" secondAttribute="top" constant="16.000000000000028" id="Aa8-lv-eZJ"/>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="bottom" secondItem="aLH-jg-3hT" secondAttribute="bottom" constant="14" id="Aqv-2L-8VT">

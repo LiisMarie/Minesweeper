@@ -303,7 +303,7 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Xp-jY-7v2">
+                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Xp-jY-7v2">
                                         <rect key="frame" x="50" y="191" width="282.33333333333331" height="66"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gameboard size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5en-ic-EEa">
@@ -375,6 +375,22 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="0Xp-jY-7v2" firstAttribute="top" secondItem="Cdi-Fl-jQE" secondAttribute="bottom" constant="16" id="a3l-JR-9cT"/>
+                                    <constraint firstItem="Cdi-Fl-jQE" firstAttribute="top" secondItem="f5u-Gh-cXb" secondAttribute="bottom" constant="16" id="nmC-NB-rbQ"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="nmC-NB-rbQ"/>
+                                        <exclude reference="a3l-JR-9cT"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="nmC-NB-rbQ"/>
+                                        <exclude reference="a3l-JR-9cT"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058823529409" green="0.99215686274509807" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
@@ -383,16 +399,19 @@
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="bottom" secondItem="aLH-jg-3hT" secondAttribute="bottom" constant="14" id="Aqv-2L-8VT">
                                 <variation key="heightClass=compact" constant="0.0"/>
                             </constraint>
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="centerY" secondItem="aLH-jg-3hT" secondAttribute="centerY" id="Mi2-SX-fha"/>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="leading" secondItem="aLH-jg-3hT" secondAttribute="leading" constant="16" id="Mt0-1n-eda"/>
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="centerY" secondItem="aLH-jg-3hT" secondAttribute="centerY" id="Q9k-hc-vez"/>
                             <constraint firstItem="aLH-jg-3hT" firstAttribute="trailing" secondItem="dp4-y3-R4e" secondAttribute="trailing" constant="16" id="VFz-wK-vng"/>
-                            <constraint firstItem="aLH-jg-3hT" firstAttribute="trailing" secondItem="dp4-y3-R4e" secondAttribute="trailing" constant="196.33333333333337" id="hrt-98-n9o">
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="top" secondItem="aLH-jg-3hT" secondAttribute="top" constant="16" id="XDC-M7-rUK"/>
+                            <constraint firstItem="aLH-jg-3hT" firstAttribute="trailing" secondItem="dp4-y3-R4e" secondAttribute="trailing" constant="16" id="hrt-98-n9o">
                                 <variation key="heightClass=compact" constant="16"/>
                             </constraint>
-                            <constraint firstItem="dp4-y3-R4e" firstAttribute="top" secondItem="aLH-jg-3hT" secondAttribute="top" constant="20" id="kkJ-t3-OHv">
+                            <constraint firstItem="dp4-y3-R4e" firstAttribute="top" secondItem="aLH-jg-3hT" secondAttribute="top" constant="16" id="kkJ-t3-OHv">
                                 <variation key="heightClass=compact" constant="16"/>
                             </constraint>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="centerX" secondItem="aLH-jg-3hT" secondAttribute="centerX" id="oim-dB-4Dh"/>
-                            <constraint firstItem="aLH-jg-3hT" firstAttribute="bottom" secondItem="dp4-y3-R4e" secondAttribute="bottom" constant="140" id="vTu-gi-YdF">
+                            <constraint firstItem="aLH-jg-3hT" firstAttribute="bottom" secondItem="dp4-y3-R4e" secondAttribute="bottom" constant="16" id="vTu-gi-YdF">
                                 <variation key="heightClass=compact" constant="16"/>
                             </constraint>
                             <constraint firstItem="dp4-y3-R4e" firstAttribute="leading" secondItem="aLH-jg-3hT" secondAttribute="leading" constant="9" id="zQi-xt-Dhp">
@@ -405,6 +424,9 @@
                                 <exclude reference="hrt-98-n9o"/>
                                 <exclude reference="vTu-gi-YdF"/>
                                 <exclude reference="Aqv-2L-8VT"/>
+                                <exclude reference="Mi2-SX-fha"/>
+                                <exclude reference="Q9k-hc-vez"/>
+                                <exclude reference="XDC-M7-rUK"/>
                                 <exclude reference="kkJ-t3-OHv"/>
                                 <exclude reference="zQi-xt-Dhp"/>
                             </mask>
@@ -419,6 +441,19 @@
                                 <exclude reference="Mt0-1n-eda"/>
                                 <include reference="kkJ-t3-OHv"/>
                                 <include reference="zQi-xt-Dhp"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="Mi2-SX-fha"/>
+                                <exclude reference="Q9k-hc-vez"/>
+                                <include reference="XDC-M7-rUK"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="vTu-gi-YdF"/>
+                                <exclude reference="kkJ-t3-OHv"/>
                             </mask>
                         </variation>
                     </view>
@@ -440,6 +475,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="97o-6g-rRb"/>
+        <segue reference="PsK-1V-Yoh"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -463,15 +463,15 @@ class GameViewController: UIViewController {
                 orientationText += "faceDown"
             case .landscapeLeft:
                 orientationText += "landscapeLeft"
-                print("turning to LANDSCAPE")
+                //print("turning to LANDSCAPE")
                 turnGameBoardToLandscape()
             case .landscapeRight:
                 orientationText += "landscapeRight"
-                print("turning to LANDSCAPE")
+                //print("turning to LANDSCAPE")
                 turnGameBoardToLandscape()
             case .portrait:
                 orientationText += "portrait"
-                print("turning to PORTRAIT")
+                //print("turning to PORTRAIT")
                 turnGameBoardToPortrait()
             case .portraitUpsideDown:
                 orientationText += "portraitUpsideDown"

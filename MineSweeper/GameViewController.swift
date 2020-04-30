@@ -455,29 +455,47 @@ class GameViewController: UIViewController {
     // handles phone orientation changes
     @objc func updateOrientationUI() {
         var orientationText = "Orient: "
-        switch UIDevice.current.orientation {
-        case .faceUp:
-            orientationText += "faceUp"
-        case .faceDown:
-            orientationText += "faceDown"
-        case .landscapeLeft:
-            orientationText += "landscapeLeft"
-            //print("turning to LANDSCAPE")
-            turnGameBoardToLandscape()
-        case .landscapeRight:
-            orientationText += "landscapeRight"
-            //print("turning to LANDSCAPE")
-            turnGameBoardToLandscape()
-        case .portrait:
-            orientationText += "portrait"
-            //print("turning to PORTRAIT")
-            turnGameBoardToPortrait()
-        case .portraitUpsideDown:
-            orientationText += "portraitUpsideDown"
-        case .unknown:
-            orientationText += "unknown"
-        default:
-            orientationText += "new"
+        if gameOn {
+            switch UIDevice.current.orientation {
+            case .faceUp:
+                orientationText += "faceUp"
+            case .faceDown:
+                orientationText += "faceDown"
+            case .landscapeLeft:
+                orientationText += "landscapeLeft"
+                print("turning to LANDSCAPE")
+                turnGameBoardToLandscape()
+            case .landscapeRight:
+                orientationText += "landscapeRight"
+                print("turning to LANDSCAPE")
+                turnGameBoardToLandscape()
+            case .portrait:
+                orientationText += "portrait"
+                print("turning to PORTRAIT")
+                turnGameBoardToPortrait()
+            case .portraitUpsideDown:
+                orientationText += "portraitUpsideDown"
+            case .unknown:
+                orientationText += "unknown"
+            default:
+                orientationText += "new"
+            }
+        } else {
+            switch UIDevice.current.orientation {
+            case .landscapeLeft:
+                orientationText += "landscapeLeft"
+                print("started in LANDSCAPE")
+                gameStartedInPortrait = false
+            case .landscapeRight:
+                orientationText += "landscapeRight"
+                print("started in LANDSCAPE")
+                gameStartedInPortrait = false
+            case .portrait:
+                orientationText += "portrait"
+                gameStartedInPortrait = true
+            default:
+                orientationText += "new"
+            }
         }
         // print("updateOrientationUI \(orientationText)")
     }

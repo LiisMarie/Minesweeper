@@ -12,6 +12,9 @@ class RootViewController: UIViewController {
     
     @IBOutlet weak var levelDifficultySegmentControl: UISegmentedControl!
     @IBOutlet weak var themeSegmentControl: UISegmentedControl!
+    @IBOutlet weak var btnApplyChanges: UIButton!
+    @IBOutlet weak var btnCustomSettings: UIButton!
+    
     
     var difficulty: Int = 10
         
@@ -42,12 +45,15 @@ class RootViewController: UIViewController {
             themeSegmentControl.selectedSegmentIndex = 1
         }
         
-        //btnBackToGame.titleEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
-        //btnBackToGame.layer.cornerRadius = 10
+        themeSegmentControl.setTitle(C.THEME_ONE, forSegmentAt: 0)
+        themeSegmentControl.setTitle(C.THEME_TWO, forSegmentAt: 1)
+        
+        btnCustomSettings.titleEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        btnCustomSettings.layer.cornerRadius = 10
+        
+        btnApplyChanges.titleEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        btnApplyChanges.layer.cornerRadius = 10
     }
-    
-    @IBOutlet weak var btnBackToGame: UIButton!
-    
     
     // MARK: - Navigation
 

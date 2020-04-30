@@ -37,7 +37,7 @@ class SquareButton: UIButton {
             return "\(self.square.numNeighboringMines)"
         }
         // there is a mine
-        return "💣"
+        return "M"
     }
     
     required init?(coder: NSCoder) {

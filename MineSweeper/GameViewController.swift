@@ -10,14 +10,6 @@ import UIKit
 
 class GameViewController: UIViewController {
     
-    /*
-     sending data to root
-     
-     if let rootVC = navigationController?.viewControllers.first as? RootViewController {
-         rootVC.difficulty = difficulty
-     }
-     */
-    
     var BOARD_SIZE_ROW: Int = 15
     var BOARD_SIZE_COL: Int = 15
     var board: Board
@@ -32,26 +24,23 @@ class GameViewController: UIViewController {
     
     let minSquareSideLength = 38.2
     
-    /*
-     
-     */
-    
-    let unopenedColor = #colorLiteral(red: 0.5723067522, green: 0.5723067522, blue: 0.5723067522, alpha: 1)
-    let openedColor = #colorLiteral(red: 0.7436007261, green: 0.7436007261, blue: 0.7436007261, alpha: 1)
-    let boomedMineColor = #colorLiteral(red: 0.9201895622, green: 0.3224265123, blue: 0.341611661, alpha: 1)
+    var unopenedColor = C.THEME_ONE_UNOPENED_COLOR
+    var openedColor = C.THEME_ONE_OPENED_COLOR
+    var boomedMineColor = C.THEME_ONE_BOOMED_MINE_COLOR
+    var titleColor = C.THEME_ONE_TITLE_COLOR
         
-    let bomb = "💣"
-    let flag = "🚩"
+    var bomb = C.THEME_ONE_BOMB
+    var flag = C.THEME_ONE_FLAG
     
-    let gameOnText = "😊"
-    let gameLostText = "😵"
-    let gameWonText = "🥳"
+    var gameOnText = C.THEME_ONE_GAME_ON_TEXT
+    var gameLostText = C.THEME_ONE_GAME_ON_TEXT
+    var gameWonText = C.THEME_ONE_GAME_WON_TEXT
     
     var bombsInTotal: Int? = nil
     var bombsLeft: Int = 0
     {
         didSet {  // everytime the value changes, didset will be triggered
-            self.bombsLeftLabel.text = "💣 \(bombsLeft)"
+            self.bombsLeftLabel.text = "\(bomb) \(bombsLeft)"
             self.bombsLeftLabel.sizeToFit()  // size of label will be adjusted
         }
     }
@@ -68,6 +57,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var bombsLeftLabel: UILabel!
     @IBOutlet weak var boardView: UIStackView!
+    @IBOutlet weak var bombFlagSegmentedControl: UISegmentedControl!
     @IBOutlet weak var gameLabel: UIButton!
     
     
@@ -102,11 +92,35 @@ class GameViewController: UIViewController {
     }
     
     func setTheme() {
-        if theme == C.THEME_ONE {  // regular
+        if theme == C.THEME_ONE {  // classical
+            unopenedColor = C.THEME_ONE_UNOPENED_COLOR
+            openedColor = C.THEME_ONE_OPENED_COLOR
+            boomedMineColor = C.THEME_ONE_BOOMED_MINE_COLOR
+            titleColor = C.THEME_ONE_TITLE_COLOR
+                 
+            bomb = C.THEME_ONE_BOMB
+            flag = C.THEME_ONE_FLAG
+             
+            gameOnText = C.THEME_ONE_GAME_ON_TEXT
+            gameLostText = C.THEME_ONE_GAME_LOST_TEXT
+            gameWonText = C.THEME_ONE_GAME_WON_TEXT
             
         } else if theme == C.THEME_TWO {  // food
-            
+            unopenedColor = C.THEME_TWO_UNOPENED_COLOR
+            openedColor = C.THEME_TWO_OPENED_COLOR
+            boomedMineColor = C.THEME_TWO_BOOMED_MINE_COLOR
+            titleColor = C.THEME_TWO_TITLE_COLOR
+                 
+            bomb = C.THEME_TWO_BOMB
+            flag = C.THEME_TWO_FLAG
+             
+            gameOnText = C.THEME_TWO_GAME_ON_TEXT
+            gameLostText = C.THEME_TWO_GAME_LOST_TEXT
+            gameWonText = C.THEME_TWO_GAME_WON_TEXT
         }
+        self.gameLabel.setTitle(gameOnText, for: .normal)
+        bombFlagSegmentedControl.setTitle(bomb, forSegmentAt: 0)
+        bombFlagSegmentedControl.setTitle(flag, forSegmentAt: 1)
     }
     
     // logic for starting a new game
@@ -208,7 +222,7 @@ class GameViewController: UIViewController {
             stack.removeFromSuperview()
         }
     }
-    
+        
     // makes gameboard, adds buttons and functionality
     func initializeBoard() {
         emptyBoardStack()
@@ -223,7 +237,7 @@ class GameViewController: UIViewController {
             for col in 0..<self.BOARD_SIZE_COL {
                 let square = board.squares[row][col]
                 let squareButton = SquareButton(squareModel: square, squareSize: squareSize, squareMargin: 1)
-                squareButton.setTitleColor(UIColor.darkGray, for: .normal)
+                squareButton.setTitleColor(titleColor, for: .normal)
                 squareButton.addTarget(self, action: #selector(squareButtonPressed), for: .touchUpInside)  // Selector(("squareButtonPressed:"))
                 stackRow.addArrangedSubview(squareButton)
                 boardView.addArrangedSubview(stackRow)
@@ -308,7 +322,11 @@ class GameViewController: UIViewController {
     // logic for opening given button
     func openSquareButton(squareButton: SquareButton) {
         squareButton.square.isRevealed = true
-        squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
+        if squareButton.getLabelText() == "M" {
+            squareButton.setTitle(bomb, for: .normal)
+        } else {
+            squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
+        }
         squareButton.backgroundColor = openedColor
     }
     
@@ -404,7 +422,7 @@ class GameViewController: UIViewController {
                     
                     if !squareButton.flagPlaced {  // if theres no flag, reveal bomb
                         squareButton.backgroundColor = openedColor
-                        squareButton.setTitle("\(squareButton.getLabelText())", for: .normal)
+                        squareButton.setTitle(bomb, for: .normal)
                     }
                     // if there is a flag, it just remains like that as the flag was placed correctly
                     
@@ -419,7 +437,7 @@ class GameViewController: UIViewController {
     }
     
     // sets mode whether player is placing flags or not
-    @IBAction func bombFlagSegmentedControl(_ sender: UISegmentedControl) {
+    @IBAction func bombFlagSegmentedControlChanges(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             self.currentlyPlacingFlags = false
         } else {

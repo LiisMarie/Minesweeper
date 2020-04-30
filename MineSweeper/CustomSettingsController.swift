@@ -10,7 +10,6 @@ import UIKit
 
 class CustomSettingsController: UIViewController {
          
-    
     @IBOutlet weak var minesLabel: UILabel!
     @IBOutlet weak var colLabel: UILabel!
     @IBOutlet weak var rowLabel: UILabel!
@@ -20,6 +19,8 @@ class CustomSettingsController: UIViewController {
     @IBOutlet weak var rowStepper: UIStepper!
     
     @IBOutlet weak var themeSegmentControl: UISegmentedControl!
+    
+    @IBOutlet weak var btnStartGame: UIButton!
     
     var amountOfCols : Int? = nil
     var amountOfRows : Int? = nil
@@ -49,6 +50,12 @@ class CustomSettingsController: UIViewController {
         } else if theme == C.THEME_TWO {
             themeSegmentControl.selectedSegmentIndex = 1
         }
+        
+        themeSegmentControl.setTitle(C.THEME_ONE, forSegmentAt: 0)
+        themeSegmentControl.setTitle(C.THEME_TWO, forSegmentAt: 1)
+        
+        btnStartGame.titleEdgeInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        btnStartGame.layer.cornerRadius = 10
     }
     
     

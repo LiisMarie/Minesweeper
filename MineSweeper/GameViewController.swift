@@ -10,6 +10,12 @@ import UIKit
 
 class GameViewController: UIViewController {
     
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var bombsLeftLabel: UILabel!
+    @IBOutlet weak var boardView: UIStackView!
+    @IBOutlet weak var bombFlagSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var gameLabel: UIButton!
+    
     var BOARD_SIZE_ROW: Int = 15
     var BOARD_SIZE_COL: Int = 15
     var board: Board
@@ -17,13 +23,13 @@ class GameViewController: UIViewController {
     var gameOn = false
     var currentlyPlacingFlags = false
     var difficulty: Int = 10
-    
-    var theme = C.THEME_ONE
-    
+        
     var gameStartedInPortrait = true
     
     let minSquareSideLength = 38.2
     
+    var theme = C.THEME_ONE
+
     var unopenedColor = C.THEME_ONE_UNOPENED_COLOR
     var openedColor = C.THEME_ONE_OPENED_COLOR
     var boomedMineColor = C.THEME_ONE_BOOMED_MINE_COLOR
@@ -53,13 +59,6 @@ class GameViewController: UIViewController {
     }
     
     var oneSecondTimer: Timer?
-    
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var bombsLeftLabel: UILabel!
-    @IBOutlet weak var boardView: UIStackView!
-    @IBOutlet weak var bombFlagSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var gameLabel: UIButton!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,9 +139,9 @@ class GameViewController: UIViewController {
         
         if let rootVC = navigationController?.viewControllers.first as? RootViewController {
             rootVC.difficulty = difficulty  // send current difficulty to root controller
-            rootVC.theme = theme 
+            rootVC.theme = theme
         }
-    
+        
     }
     
     // for timer to count seconds
